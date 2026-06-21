@@ -482,8 +482,8 @@ Génère UNIQUEMENT un JSON valide avec cette structure exacte :
     }
   },
   "volonte": {
-    "ref": "Livre ch:v",
-    "texte": "texte LS1910 exprimant la Volonté de Dieu",
+    "ref": "Livre ch:v (DOIT être une référence à l'intérieur de la péricope ${ref}, différente du verset de la Pensée si possible)",
+    "texte": "texte LS1910 — OBLIGATOIREMENT un verset pris DANS la péricope ${ref} elle-même (comme la Pensée), qui exprime la Volonté de Dieu",
     "type": "cause",
     "explication": "Explication du lien entre la Volonté de Dieu et la Pensée (cause ou conséquence)",
     "periodes": {
@@ -510,12 +510,25 @@ Génère UNIQUEMENT un JSON valide avec cette structure exacte :
     }
   }
 }
-RÈGLES IMPORTANTES POUR LES 4 PÉRIODES (méthode Dr. Arkad) — respecte STRICTEMENT ce découpage canonique, ne mélange jamais les catégories :
-- "histoire" : AT = Josué à Esther (livres historiques) ; NT = Actes des Apôtres. Jamais un livre prophétique ou poétique ici.
-- "loi" : AT = Genèse à Deutéronome (le Pentateuque) ; NT = Matthieu à Jean (les 4 Évangiles).
-- "prophetie" : AT = Ésaïe à Malachie (les livres prophétiques) ; NT = Apocalypse.
-- "poesie" : AT = Job à Cantique des Cantiques (livres poétiques/sapientiaux) ; NT = Romains à Jude (les épîtres).
-Avant de choisir un texte "at" ou "nt" pour une période, vérifie que le livre cité appartient bien à la liste ci-dessus pour cette période précise.
+RÈGLES IMPORTANTES POUR LES 4 PÉRIODES (méthode Dr. Arkad) — c'est la règle la plus souvent violée, sois EXTRÊMEMENT rigoureux. Chaque période a EXACTEMENT deux zones de livres autorisés (une AT, une NT) et AUCUN AUTRE LIVRE n'est permis dans cette période :
+
+1. "histoire" — AT autorisé UNIQUEMENT : Josué, Juges, Ruth, 1 Samuel, 2 Samuel, 1 Rois, 2 Rois, 1 Chroniques, 2 Chroniques, Esdras, Néhémie, Esther.
+   NT autorisé UNIQUEMENT : Actes des Apôtres.
+   INTERDIT ici : Genèse à Deutéronome, tout prophète, tout poétique, tout évangile, toute épître, l'Apocalypse.
+
+2. "loi" — AT autorisé UNIQUEMENT : Genèse, Exode, Lévitique, Nombres, Deutéronome.
+   NT autorisé UNIQUEMENT : Matthieu, Marc, Luc, Jean (les 4 évangiles).
+   INTERDIT ici : tout livre historique (Josué-Esther), tout prophète, tout poétique, Actes, toute épître, l'Apocalypse.
+
+3. "prophetie" — AT autorisé UNIQUEMENT : Ésaïe, Jérémie, Lamentations, Ézéchiel, Daniel, Osée, Joël, Amos, Abdias, Jonas, Michée, Nahum, Habacuc, Sophonie, Aggée, Zacharie, Malachie.
+   NT autorisé UNIQUEMENT : Apocalypse.
+   INTERDIT ici : Pentateuque, livres historiques, poétiques, évangiles, Actes, épîtres.
+
+4. "poesie" — AT autorisé UNIQUEMENT : Job, Psaumes, Proverbes, Ecclésiaste, Cantique des Cantiques.
+   NT autorisé UNIQUEMENT : Romains, 1 Corinthiens, 2 Corinthiens, Galates, Éphésiens, Philippiens, Colossiens, 1 Thessaloniciens, 2 Thessaloniciens, 1 Timothée, 2 Timothée, Tite, Philémon, Hébreux, Jacques, 1 Pierre, 2 Pierre, 1 Jean, 2 Jean, 3 Jean, Jude (les épîtres).
+   INTERDIT ici : Pentateuque, livres historiques, prophètes, évangiles, Actes, Apocalypse.
+
+Avant de répondre, vérifie pour CHAQUE texte "at" et "nt" de CHAQUE période que le livre cité figure bien dans la liste "autorisé" correspondante. Si un livre ne figure dans aucune liste pour la zone choisie, change de texte.
 
 RÈGLES GÉNÉRALES :
 - Tous les textes en français Louis Segond 1910
@@ -572,7 +585,7 @@ function renderStudy(s){
     prophetie:{cls:'ppr',icon:'👁',lbl:'Prophétie',def:'La volonté à accomplir'},
     poesie:  {cls:'ppo',icon:'🎶',lbl:'Poésie',  def:'Le modèle de vie'}
   };
-  function escAttr(s){return (s||'').replace(/'/g,"'").replace(/"/g,'&quot;')}
+  function escAttr(s){return (s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;').replace(/\n/g,' ')}
   function txCard(tx,label){
     if(!tx)return'';
     return`<div class="texte-card">
