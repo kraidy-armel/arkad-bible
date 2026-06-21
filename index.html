@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#6b3a1f">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Arkad Bible">
-<title>Arkad Bible — Méthode Dr. Arkad</title>
+<meta name="apple-mobile-web-app-title" content="EFBC Mission God">
+<title>EFBC Mission God — Méthode Dr. Arkad</title>
 <link rel="manifest" href="#" id="manifestLink">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -66,6 +66,9 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
 .input-screen{padding:20px 16px 100px}
 .input-hero{text-align:center;margin-bottom:22px;padding:20px 10px}
 .cross-icon{font-size:44px;margin-bottom:10px;color:var(--gold)}
+.brand-logo{width:44px;height:50px;display:inline-block;vertical-align:middle;margin-bottom:10px}
+.brand-logo-sm{width:18px;height:20px;display:inline-block;vertical-align:middle;margin-right:5px}
+.brand-logo-lg{width:54px;height:61px}
 .input-hero-title{font-size:22px;font-weight:700;color:var(--accent);margin-bottom:6px;font-family:Georgia,serif}
 .input-hero-sub{font-size:13px;color:var(--ink3);line-height:1.55}
 .input-card{background:var(--surface);border:0.5px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(107,58,31,0.06)}
@@ -138,6 +141,17 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
 .pensee-box{padding:14px;background:rgba(184,134,11,0.07);border-radius:11px;border:1px solid rgba(184,134,11,0.22)}
 .pensee-text{font-size:16px;font-family:Georgia,serif;color:var(--ink);line-height:1.75;font-style:italic}
 .pensee-ref{font-size:12px;color:var(--gold);font-weight:700;margin-top:8px}
+.pensee-adjust{display:flex;gap:6px;margin-top:10px;padding-top:10px;border-top:0.5px dashed rgba(184,134,11,0.3)}
+.pensee-adjust-label{font-size:10.5px;color:var(--ink3);margin-bottom:6px}
+.pensee-adjust input{
+  flex:1;padding:8px 10px;border:1px solid rgba(139,90,43,0.25);border-radius:8px;
+  font-size:13px;background:var(--surface);color:var(--ink);
+}
+.pensee-adjust button{
+  padding:8px 12px;border-radius:8px;border:none;background:var(--accent);
+  color:var(--gold-light);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;
+}
+.requested-note{font-size:11px;color:var(--ink3);margin-top:4px;font-style:italic}
 .preuve-item{padding:9px 0;border-bottom:0.5px solid var(--border);display:flex;align-items:flex-start;gap:9px}
 .preuve-item:last-child{border-bottom:none}
 .preuve-ref{font-size:12px;color:var(--accent);font-weight:700;min-width:95px;padding-top:1px}
@@ -272,12 +286,24 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
   <!-- STATUS BAR -->
   <div class="status-bar">
     <span id="clockDisplay">9:41</span>
-    <span style="font-weight:700;letter-spacing:1px">✝ ARKAD BIBLE</span>
+    <span style="font-weight:700;letter-spacing:1px;display:flex;align-items:center">
+      <svg class="brand-logo-sm" viewBox="0 0 300 340" xmlns="http://www.w3.org/2000/svg">
+        <rect x="6" y="6" width="288" height="328" rx="34" fill="#000000" stroke="#173a78" stroke-width="10"/>
+        <polygon points="150,46 52,268 172,268" fill="#173a78"/>
+        <polygon points="150,46 128,268 248,268" fill="#f4c530"/>
+        <polygon points="150,46 138,108 162,108" fill="#5bc4e8"/>
+        <rect x="42" y="246" width="216" height="46" rx="23" fill="#c0392b"/>
+        <path d="M150 296 C150 286 132 274 132 286 C132 298 150 308 150 316 C150 308 168 298 168 286 C168 274 150 286 150 296 Z" fill="#c0392b"/>
+        <rect x="139" y="288" width="22" height="14" rx="2" fill="#ffffff"/>
+        <path d="M150 270 C147 278 147 284 150 288 C153 284 153 278 150 270 Z" fill="#e8742c"/>
+      </svg>
+      EFBC MISSION GOD
+    </span>
     <span id="dateDisplay"></span>
   </div>
   <!-- NAV BAR -->
   <div class="nav-bar">
-    <span class="nav-title" id="navTitle">Bible — Méthode Dr. Arkad</span>
+    <span class="nav-title" id="navTitle">EFBC Mission God</span>
     <button class="nav-btn" onclick="showScreen('saved')" title="Mes études">📚</button>
   </div>
   <!-- TAB BAR -->
@@ -296,7 +322,16 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
   <div class="screen active" id="screen-input">
     <div class="input-screen">
       <div class="input-hero">
-        <div class="cross-icon">✝</div>
+        <svg class="brand-logo brand-logo-lg" viewBox="0 0 300 340" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="6" width="288" height="328" rx="34" fill="#000000" stroke="#173a78" stroke-width="10"/>
+          <polygon points="150,46 52,268 172,268" fill="#173a78"/>
+          <polygon points="150,46 128,268 248,268" fill="#f4c530"/>
+          <polygon points="150,46 138,108 162,108" fill="#5bc4e8"/>
+          <rect x="42" y="246" width="216" height="46" rx="23" fill="#c0392b"/>
+          <path d="M150 296 C150 286 132 274 132 286 C132 298 150 308 150 316 C150 308 168 298 168 286 C168 274 150 286 150 296 Z" fill="#c0392b"/>
+          <rect x="139" y="288" width="22" height="14" rx="2" fill="#ffffff"/>
+          <path d="M150 270 C147 278 147 284 150 288 C153 284 153 278 150 270 Z" fill="#e8742c"/>
+        </svg>
         <div class="input-hero-title">Étude de péricope</div>
         <div class="input-hero-sub">Saisissez une péricope biblique et l'IA génère l'étude complète selon la méthode Dr. Arkad — Pensée, Preuves, 4 Périodes, Volonté de Dieu</div>
       </div>
@@ -332,16 +367,8 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
   <!-- SCREEN: LOADING (not a tab, shown/hidden) -->
   <div class="loading-screen" id="loadingScreen">
     <div class="loading-cross">✝</div>
-    <div class="loading-title">Analyse en cours…</div>
+    <div class="loading-title">Étude en cours…</div>
     <div class="loading-ref" id="loadingRef">Jean 10:11-16</div>
-    <div class="loading-steps">
-      <div class="lstep" id="ls1"><span class="lstep-icon s-wait" id="li1">○</span>Identification de la péricope</div>
-      <div class="lstep" id="ls2"><span class="lstep-icon s-wait" id="li2">○</span>Preuves péricope (LS1910)</div>
-      <div class="lstep" id="ls3"><span class="lstep-icon s-wait" id="li3">○</span>Identification de la Pensée</div>
-      <div class="lstep" id="ls4"><span class="lstep-icon s-wait" id="li4">○</span>Textes d'explication — 4 périodes</div>
-      <div class="lstep" id="ls5"><span class="lstep-icon s-wait" id="li5">○</span>La Volonté de Dieu</div>
-      <div class="lstep" id="ls6"><span class="lstep-icon s-wait" id="li6">○</span>Mise en forme de l'étude</div>
-    </div>
   </div>
   <!-- SCREEN: STUDY -->
   <div class="screen" id="screen-study">
@@ -402,8 +429,8 @@ function showScreen(t){
     const tb=document.getElementById('tab-'+id);
     if(tb)tb.classList.toggle('active',id===t);
   });
-  const titles={input:'Bible — Méthode Dr. Arkad',study:'Étude péricope',saved:'Mes études'};
-  document.getElementById('navTitle').textContent=titles[t]||'Arkad Bible';
+  const titles={input:'EFBC Mission God',study:'Étude péricope',saved:'Mes études'};
+  document.getElementById('navTitle').textContent=titles[t]||'EFBC Mission God';
   if(t==='saved')renderSaved();
   if(t==='study'&&currentStudy)renderStudy(currentStudy);
 }
@@ -413,17 +440,23 @@ function fillEx(ref,titre){
   document.getElementById('titreInput').value=titre;
   showScreen('input');
 }
-// ── LOADING STEPS ──
-function setStep(n,status){
-  const ic=document.getElementById('li'+n);
-  if(!ic)return;
-  ic.className='lstep-icon '+(status==='done'?'s-done':status==='active'?'s-active':'s-wait');
-  ic.textContent=status==='done'?'✓':status==='active'?'◉':'○';
-}
 // ── MAIN: LAUNCH ANALYSIS ──
-async function lancerAnalyse(){
+function lancerAnalyse(){
   const ref=document.getElementById('pericInput').value.trim();
   const titre=document.getElementById('titreInput').value.trim();
+  genererEtude(ref,titre,null);
+}
+// Régénère l'étude en imposant le verset de la Pensée choisi par l'utilisateur.
+async function regenererAvecPensee(){
+  if(!currentStudy)return;
+  const input=document.getElementById('penseeAdjustInput');
+  const newRef=input?input.value.trim():'';
+  if(!newRef)return;
+  const ref=currentStudy._requestedRef||currentStudy.reference;
+  const titre=currentStudy.titre||'';
+  await genererEtude(ref,titre,newRef);
+}
+async function genererEtude(ref,titre,forcedPenseeRef){
   if(!ref){
     document.getElementById('pericInput').focus();
     document.getElementById('pericInput').style.borderColor='#c0392b';
@@ -435,14 +468,6 @@ async function lancerAnalyse(){
   document.getElementById('loadingScreen').classList.add('show');
   ['input','study','saved'].forEach(id=>document.getElementById('screen-'+id).classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  [1,2,3,4,5,6].forEach(n=>setStep(n,'pending'));
-  let si=0;
-  const stepInterval=setInterval(()=>{
-    if(si>0)setStep(si,'done');
-    si++;
-    if(si<=6)setStep(si,'active');
-    else clearInterval(stepInterval);
-  },900);
   // Récupère les vraies références croisées (OpenBible.info) avant de construire le prompt,
   // pour que la section "preuves" soit fiable plutôt qu'inventée par l'IA.
   let crossRefList=[];
@@ -454,11 +479,18 @@ async function lancerAnalyse(){
       if(Array.isArray(crData.references))crossRefList=crData.references;
     }
   }catch(e){ /* on continue sans références croisées si l'appel échoue */ }
+  const isSingleVerse=/:\d+$/.test(ref)&&!ref.includes('-');
   const crossRefBlock=crossRefList.length
-    ?`RÉFÉRENCES CROISÉES EXACTES POUR CETTE PÉRICOPE (issues d'une base de données de référence, pas inventées) — utilise EXCLUSIVEMENT ces références pour la section "preuves", dans cet ordre de pertinence, et rédige pour chacune le texte français Louis Segond 1910 correspondant :\n${crossRefList.map(r=>'- '+r).join('\n')}\n\n`
+    ?`RÉFÉRENCES CROISÉES EXACTES POUR CETTE PÉRICOPE (issues d'une base de données de référence, pas inventées) — utilise EXCLUSIVEMENT ces références pour la section "preuves", dans cet ordre de pertinence :\n${crossRefList.map(r=>'- '+r).join('\n')}\n\n`
+    :'';
+  const singleVerseBlock=isSingleVerse
+    ?`ATTENTION : le lecteur a soumis un seul verset (${ref}), pas une péricope complète. Identifie d'abord la péricope complète (l'unité littéraire naturelle — paragraphe, scène ou section thématique délimitée) à laquelle appartient ce verset, et utilise CETTE péricope élargie comme valeur de "reference" et pour "pericopeVersets" (pas seulement le verset isolé). Une péricope typique compte entre 3 et 30 versets.\n\n`
+    :'';
+  const forcedPenseeBlock=forcedPenseeRef
+    ?`IMPORTANT : L'UTILISATEUR A LUI-MÊME DÉSIGNÉ LA PENSÉE DE CETTE PÉRICOPE : ${forcedPenseeRef}. N'EN CHOISIS PAS UNE AUTRE — utilise EXACTEMENT cette référence comme "pensee.ref" (et le texte correspondant comme "pensee.texte"), et assure la cohérence de toute l'étude (preuves, périodes, volonté) avec ce choix.\n\n`
     :'';
   const prompt=`Tu es un expert en exégèse biblique utilisant la méthode Dr. Arkad. Analyse la péricope suivante et génère une étude complète en JSON.
-${crossRefBlock}
+${singleVerseBlock}${forcedPenseeBlock}${crossRefBlock}
 PÉRICOPE : "${ref}"${titre?'\nTITRE : "'+titre+'"':''}
 Génère UNIQUEMENT un JSON valide avec cette structure exacte :
 {
@@ -561,20 +593,62 @@ RÈGLES GÉNÉRALES :
         messages:[{role:'user',content:prompt}]
       })
     });
-    clearInterval(stepInterval);
-    [1,2,3,4,5,6].forEach(n=>setStep(n,'done'));
     const data=await resp.json();
     if(data.error)throw new Error(data.error.message);
     const raw=data.content[0].text.trim().replace(/^```json?\s*/,'').replace(/\s*```$/,'');
     const study=JSON.parse(raw);
+
+    // Remplace le texte rédigé par l'IA par le texte EXACT Louis Segond 1910
+    // (péricope, preuves, périodes, volonté) — l'IA ne fait plus que choisir
+    // les références et l'analyse, pas le texte biblique lui-même.
+    try{
+      const refsToFetch=new Set();
+      if(study.reference)refsToFetch.add(study.reference);
+      (study.preuves||[]).forEach(p=>{if(p.ref)refsToFetch.add(p.ref)});
+      if(study.pensee&&study.pensee.ref)refsToFetch.add(study.pensee.ref);
+      if(study.volonte&&study.volonte.ref)refsToFetch.add(study.volonte.ref);
+      ['histoire','loi','prophetie','poesie'].forEach(k=>{
+        const pd=study.periodes&&study.periodes[k];
+        if(pd&&pd.at&&pd.at.ref)refsToFetch.add(pd.at.ref);
+        if(pd&&pd.nt&&pd.nt.ref)refsToFetch.add(pd.nt.ref);
+        const vpd=study.volonte&&study.volonte.periodes&&study.volonte.periodes[k];
+        if(vpd&&vpd.at&&vpd.at.ref)refsToFetch.add(vpd.at.ref);
+        if(vpd&&vpd.nt&&vpd.nt.ref)refsToFetch.add(vpd.nt.ref);
+      });
+      const vtResp=await fetch(PROXY_URL.replace('/api/messages','/api/verse-text-batch'),{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({refs:Array.from(refsToFetch)})
+      });
+      if(vtResp.ok){
+        const vtData=await vtResp.json();
+        const results=vtData.results||{};
+        if(results[study.reference])study.pericopeVersets=results[study.reference].verses.map(v=>({n:v.n,texte:v.texte}));
+        const applyVerbatim=(obj)=>{if(obj&&obj.ref&&results[obj.ref])obj.texte=results[obj.ref].text};
+        (study.preuves||[]).forEach(applyVerbatim);
+        applyVerbatim(study.pensee);
+        applyVerbatim(study.volonte);
+        ['histoire','loi','prophetie','poesie'].forEach(k=>{
+          if(study.periodes&&study.periodes[k]){
+            applyVerbatim(study.periodes[k].at);
+            applyVerbatim(study.periodes[k].nt);
+          }
+          if(study.volonte&&study.volonte.periodes&&study.volonte.periodes[k]){
+            applyVerbatim(study.volonte.periodes[k].at);
+            applyVerbatim(study.volonte.periodes[k].nt);
+          }
+        });
+      }
+    }catch(e){ /* en cas d'échec, on garde le texte rédigé par l'IA */ }
+
+    study._requestedRef=ref;
     currentStudy=study;
     setTimeout(()=>{
       document.getElementById('loadingScreen').classList.remove('show');
       document.getElementById('analyseBtn').disabled=false;
       showScreen('study');
-    },500);
+    },300);
   }catch(err){
-    clearInterval(stepInterval);
     document.getElementById('loadingScreen').classList.remove('show');
     document.getElementById('analyseBtn').disabled=false;
     document.getElementById('studyContent').innerHTML=`
@@ -654,6 +728,7 @@ function renderStudy(s){
         <span>📖 ${s.reference}</span>
         <span>🕊 Louis Segond 1910</span>
       </div>
+      ${(s._requestedRef&&s._requestedRef!==s.reference)?`<div class="requested-note">Demandé : ${s._requestedRef} → péricope étudiée : ${s.reference}</div>`:''}
     </div>
     <div class="study-body">
       <div class="section">
@@ -662,6 +737,11 @@ function renderStudy(s){
           <div class="pensee-box">
             <div class="pensee-text">"${s.pensee?.texte||''}"</div>
             <div class="pensee-ref">${s.pensee?.ref||''}</div>
+          </div>
+          <div class="pensee-adjust-label" style="margin-top:10px">Pas le bon verset ? Indiquez la référence exacte et régénérez :</div>
+          <div class="pensee-adjust">
+            <input type="text" id="penseeAdjustInput" placeholder="Ex : ${s.reference} 18" value="${s.pensee?.ref||''}" />
+            <button onclick="regenererAvecPensee()">🔄 Régénérer</button>
           </div>
         </div>
       </div>
@@ -771,7 +851,7 @@ function shareStudy(){
     '🔗 PREUVES PÉRICOPE :\n'+preuves+'\n\n'+
     '👑 VOLONTÉ DE DIEU ('+currentStudy.volonte?.type+') :\n"'+currentStudy.volonte?.texte+'"\n— '+currentStudy.volonte?.ref+
     (n?'\n\n📝 NOTES :\n'+n:'')+
-    '\n\n— Méthode Dr. Arkad | Arkad Bible';
+    '\n\n— Méthode Dr. Arkad | EFBC Mission God';
   if(navigator.share){
     navigator.share({title:currentStudy.titre||currentStudy.reference,text});
   }else{
@@ -811,8 +891,8 @@ function showModal(ref,texte){
 function closeModal(){document.getElementById('modalOverlay').classList.remove('open')}
 // ── PWA MANIFEST (inline) ──
 const manifest={
-  name:'Arkad Bible',
-  short_name:'Arkad Bible',
+  name:'EFBC Mission God',
+  short_name:'EFBC Mission God',
   description:'Étude de péricope — Méthode Dr. Arkad',
   start_url:'.',
   display:'standalone',
@@ -820,8 +900,8 @@ const manifest={
   theme_color:'#6b3a1f',
   orientation:'portrait',
   icons:[
-    {src:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="32" fill="%236b3a1f"/><text x="96" y="130" font-size="100" text-anchor="middle" fill="%23f0e68c">✝</text></svg>',sizes:'192x192',type:'image/svg+xml'},
-    {src:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="80" fill="%236b3a1f"/><text x="256" y="350" font-size="280" text-anchor="middle" fill="%23f0e68c">✝</text></svg>',sizes:'512x512',type:'image/svg+xml'}
+    {src:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 340"><rect x="6" y="6" width="288" height="328" rx="34" fill="%23000000" stroke="%23173a78" stroke-width="10"/><polygon points="150,46 52,268 172,268" fill="%23173a78"/><polygon points="150,46 128,268 248,268" fill="%23f4c530"/><polygon points="150,46 138,108 162,108" fill="%235bc4e8"/><rect x="42" y="246" width="216" height="46" rx="23" fill="%23c0392b"/><path d="M150 296 C150 286 132 274 132 286 C132 298 150 308 150 316 C150 308 168 298 168 286 C168 274 150 286 150 296 Z" fill="%23c0392b"/><rect x="139" y="288" width="22" height="14" rx="2" fill="%23ffffff"/><path d="M150 270 C147 278 147 284 150 288 C153 284 153 278 150 270 Z" fill="%23e8742c"/></svg>',sizes:'192x192',type:'image/svg+xml'},
+    {src:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 340"><rect x="6" y="6" width="288" height="328" rx="34" fill="%23000000" stroke="%23173a78" stroke-width="10"/><polygon points="150,46 52,268 172,268" fill="%23173a78"/><polygon points="150,46 128,268 248,268" fill="%23f4c530"/><polygon points="150,46 138,108 162,108" fill="%235bc4e8"/><rect x="42" y="246" width="216" height="46" rx="23" fill="%23c0392b"/><path d="M150 296 C150 286 132 274 132 286 C132 298 150 308 150 316 C150 308 168 298 168 286 C168 274 150 286 150 296 Z" fill="%23c0392b"/><rect x="139" y="288" width="22" height="14" rx="2" fill="%23ffffff"/><path d="M150 270 C147 278 147 284 150 288 C153 284 153 278 150 270 Z" fill="%23e8742c"/></svg>',sizes:'512x512',type:'image/svg+xml'}
   ]
 };
 const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
