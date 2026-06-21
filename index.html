@@ -443,7 +443,22 @@ async function lancerAnalyse(){
     if(si<=6)setStep(si,'active');
     else clearInterval(stepInterval);
   },900);
+  // Récupère les vraies références croisées (OpenBible.info) avant de construire le prompt,
+  // pour que la section "preuves" soit fiable plutôt qu'inventée par l'IA.
+  let crossRefList=[];
+  try{
+    const crUrl=PROXY_URL.replace('/api/messages','/api/cross-refs')+'?ref='+encodeURIComponent(ref);
+    const crResp=await fetch(crUrl);
+    if(crResp.ok){
+      const crData=await crResp.json();
+      if(Array.isArray(crData.references))crossRefList=crData.references;
+    }
+  }catch(e){ /* on continue sans références croisées si l'appel échoue */ }
+  const crossRefBlock=crossRefList.length
+    ?`RÉFÉRENCES CROISÉES EXACTES POUR CETTE PÉRICOPE (issues d'une base de données de référence, pas inventées) — utilise EXCLUSIVEMENT ces références pour la section "preuves", dans cet ordre de pertinence, et rédige pour chacune le texte français Louis Segond 1910 correspondant :\n${crossRefList.map(r=>'- '+r).join('\n')}\n\n`
+    :'';
   const prompt=`Tu es un expert en exégèse biblique utilisant la méthode Dr. Arkad. Analyse la péricope suivante et génère une étude complète en JSON.
+${crossRefBlock}
 PÉRICOPE : "${ref}"${titre?'\nTITRE : "'+titre+'"':''}
 Génère UNIQUEMENT un JSON valide avec cette structure exacte :
 {
@@ -533,7 +548,7 @@ Avant de répondre, vérifie pour CHAQUE texte "at" et "nt" de CHAQUE période q
 RÈGLES GÉNÉRALES :
 - Tous les textes en français Louis Segond 1910
 - La Pensée = le verset de la péricope qui reflète et résume TOUS les textes de preuves
-- Les preuves = références classiques LS1910 de cette péricope (celles en tête dans les Bibles annotées)
+- Les preuves = ${crossRefList.length?'utilise UNIQUEMENT la liste de références croisées exactes fournie ci-dessus':'références classiques LS1910 de cette péricope (celles en tête dans les Bibles annotées)'}
 - La Volonté de Dieu = soit la cause (pourquoi Dieu agit) soit la conséquence (ce qui résulte) de la Pensée
 - Réponds UNIQUEMENT avec le JSON, aucun texte avant ni après, aucun markdown`;
   try{
