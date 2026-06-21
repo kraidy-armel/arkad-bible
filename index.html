@@ -186,6 +186,17 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
 .volonte-expl{font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:12px;padding:10px 12px;background:var(--parch);border-radius:9px}
 .resume-box{font-size:13.5px;color:var(--ink2);line-height:1.65;padding:12px 13px;background:var(--parch);border-radius:9px;border:1px solid var(--border)}
 .pensee-expl{font-size:13px;color:var(--ink2);line-height:1.6;margin-top:12px;padding:10px 12px;background:var(--parch);border-radius:9px}
+.custom-add{margin-bottom:13px;padding:12px 13px;background:rgba(13,138,114,0.06);border:1px solid rgba(13,138,114,0.25);border-radius:11px}
+.custom-add-label{font-size:11.5px;color:var(--ink2);line-height:1.5;margin-bottom:8px}
+.custom-add-row{display:flex;gap:6px}
+.custom-add-row input{flex:1;padding:8px 10px;border:1px solid rgba(13,138,114,0.3);border-radius:8px;font-size:13px;background:var(--surface);color:var(--ink)}
+.custom-add-row button{padding:8px 12px;border-radius:8px;border:none;background:#0d8a72;color:#fff;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.custom-add-row button:disabled{opacity:0.6}
+.custom-add-msg{font-size:11.5px;margin-top:7px;line-height:1.5}
+.custom-add-msg.err{color:#c0392b}
+.texte-card.custom{border-left:3px solid #0d8a72;background:rgba(13,138,114,0.07)!important;position:relative}
+.texte-custom-tag{display:inline-block;font-size:9px;padding:2px 7px;border-radius:20px;background:#0d8a72;color:#fff;font-weight:700;margin-left:6px;letter-spacing:0.3px}
+.texte-del-btn{position:absolute;top:8px;right:9px;background:none;border:none;color:#c0392b;cursor:pointer;font-size:14px;padding:2px 4px;line-height:1}
 .notes-ta{
   width:100%;border:none;resize:none;font-size:14px;color:var(--ink);
   background:transparent;line-height:1.65;min-height:100px;outline:none;
@@ -787,10 +798,12 @@ function renderStudy(s){
     poesie:  {cls:'ppo',icon:'🎶',lbl:'Poésie',  def:'Le modèle de vie'}
   };
   function escAttr(s){return (s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;').replace(/\n/g,' ')}
-  function txCard(tx,label){
+  function txCard(tx,label,pk,zone,idx){
     if(!tx)return'';
-    return`<div class="texte-card">
-      <div class="texte-badge">${label}</div>
+    const isCustom=!!tx.custom;
+    return`<div class="texte-card${isCustom?' custom':''}">
+      ${isCustom&&pk?`<button class="texte-del-btn" onclick="removeCustomTexte('${pk}','${zone}',${idx})" title="Retirer ce texte">✕</button>`:''}
+      <div class="texte-badge">${label}${isCustom?'<span class="texte-custom-tag">🙋 Vous</span>':''}</div>
       <button class="texte-ref-btn" onclick="showModal('${escAttr(tx.ref)}','${escAttr(tx.texte)}')">
         🔗 ${tx.ref||''}
       </button>
@@ -804,8 +817,9 @@ function renderStudy(s){
     const pid=pfx+'_'+key;
     const atArr=Array.isArray(pd.at)?pd.at:(pd.at?[pd.at]:[]);
     const ntArr=Array.isArray(pd.nt)?pd.nt:(pd.nt?[pd.nt]:[]);
-    const atHtml=atArr.map((tx,i)=>txCard(tx,`AT ${i+1}/${atArr.length} — Ancien Testament`)).join('');
-    const ntHtml=ntArr.map((tx,i)=>txCard(tx,`NT ${i+1}/${ntArr.length} — Nouveau Testament`)).join('');
+    const linkPk=pfx==='per'?key:null;
+    const atHtml=atArr.map((tx,i)=>txCard(tx,`AT ${i+1}/${atArr.length} — Ancien Testament`,linkPk,'at',i)).join('');
+    const ntHtml=ntArr.map((tx,i)=>txCard(tx,`NT ${i+1}/${ntArr.length} — Nouveau Testament`,linkPk,'nt',i)).join('');
     return`<div class="periode-wrap ${c.cls}">
       <div class="periode-head" onclick="togglePd('${pid}')">
         <span>${c.icon}</span>
@@ -885,7 +899,17 @@ function renderStudy(s){
           📚 Textes d'explication — 4 périodes
           <span class="sec-tog" id="stog_texpl">▸</span>
         </div>
-        <div class="sec-body collapsed" id="sec_texpl">${perHtml}</div>
+        <div class="sec-body collapsed" id="sec_texpl">
+          <div class="custom-add">
+            <div class="custom-add-label">🙋 Vous avez un texte à ajouter ? Indiquez la référence — il sera relié à la Pensée et classé automatiquement dans la bonne période :</div>
+            <div class="custom-add-row">
+              <input type="text" id="customTexteInput" placeholder="Ex : Romains 8:28" />
+              <button id="customTexteBtn" onclick="ajouterTexteCustom()">➕ Ajouter</button>
+            </div>
+            <div class="custom-add-msg" id="customTexteMsg"></div>
+          </div>
+          ${perHtml}
+        </div>
       </div>
       <div class="section">
         <div class="sec-head" onclick="toggleSec('volonte')">
@@ -934,6 +958,74 @@ function togglePd(id){
   if(!b)return;
   const op=b.classList.toggle('open');
   if(t)t.textContent=op?'▾':'▸';
+}
+// ── TEXTE D'EXPLICATION AJOUTÉ PAR L'UTILISATEUR ──
+// L'utilisateur indique une référence ; le serveur la classe automatiquement
+// dans la bonne période/zone (AT/NT) et renvoie son texte LS1910 exact ; l'IA
+// n'écrit ensuite qu'une courte phrase reliant ce texte à la Pensée. Affiché
+// avec une couleur distincte (vert sarcelle) pour le différencier des textes
+// choisis par l'IA.
+const PERIODE_ANGLE_DEF={
+  histoire:"L'identité du chrétien",
+  loi:'La volonté de Dieu à faire',
+  prophetie:'La volonté à accomplir',
+  poesie:'Le modèle de vie à transmettre'
+};
+async function ajouterTexteCustom(){
+  const input=document.getElementById('customTexteInput');
+  const btn=document.getElementById('customTexteBtn');
+  const msgEl=document.getElementById('customTexteMsg');
+  const ref=(input?.value||'').trim();
+  if(!ref||!currentStudy)return;
+  btn.disabled=true;
+  msgEl.className='custom-add-msg';
+  msgEl.textContent='Recherche en cours…';
+  try{
+    const clUrl=PROXY_URL.replace('/api/messages','/api/classify-ref')+'?ref='+encodeURIComponent(ref);
+    const clResp=await fetch(clUrl);
+    const clData=await clResp.json();
+    if(!clResp.ok||clData.error)throw new Error((clData.error&&clData.error.message)||'Référence introuvable.');
+    const{ref:frRef,periode,zone,texte}=clData;
+    const angle=(currentStudy.periodes&&currentStudy.periodes[periode]&&currentStudy.periodes[periode].angle)||PERIODE_ANGLE_DEF[periode];
+    const penseeTexte=(currentStudy.pensee&&currentStudy.pensee.texte)||'';
+    const penseeRef=(currentStudy.pensee&&currentStudy.pensee.ref)||'';
+    msgEl.textContent='Rédaction du lien avec la Pensée…';
+    const lienPrompt=`Voici la Pensée centrale d'une étude biblique : "${penseeTexte}" (${penseeRef}).
+Voici un texte que le lecteur a choisi lui-même comme texte d'explication, classé dans la période "${periode}" (angle : "${angle}") : "${texte}" (${frRef}).
+En 1 à 2 phrases simples et claires, explique le lien entre ce texte et la Pensée, sous l'angle de cette période.
+Réponds UNIQUEMENT avec le texte du lien, sans guillemets, sans préambule, sans markdown.`;
+    const lienResp=await fetch(PROXY_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:300,messages:[{role:'user',content:lienPrompt}]})
+    });
+    const lienData=await lienResp.json();
+    if(lienData.error)throw new Error(lienData.error.message);
+    const lien=((lienData.content&&lienData.content[0]&&lienData.content[0].text)||'').trim();
+    if(!currentStudy.periodes)currentStudy.periodes={};
+    if(!currentStudy.periodes[periode])currentStudy.periodes[periode]={angle,at:[],nt:[]};
+    if(!Array.isArray(currentStudy.periodes[periode][zone]))currentStudy.periodes[periode][zone]=[];
+    currentStudy.periodes[periode][zone].push({ref:frRef,texte,lien,custom:true});
+    input.value='';
+    renderStudy(currentStudy);
+    const body=document.getElementById('sec_texpl');
+    if(body)body.classList.remove('collapsed');
+    const tog=document.getElementById('stog_texpl');
+    if(tog)tog.textContent='▾';
+  }catch(e){
+    msgEl.className='custom-add-msg err';
+    msgEl.textContent='⚠️ '+e.message;
+    btn.disabled=false;
+  }
+}
+function removeCustomTexte(periode,zone,idx){
+  if(!currentStudy||!currentStudy.periodes||!currentStudy.periodes[periode]||!currentStudy.periodes[periode][zone])return;
+  currentStudy.periodes[periode][zone].splice(idx,1);
+  renderStudy(currentStudy);
+  const body=document.getElementById('sec_texpl');
+  if(body)body.classList.remove('collapsed');
+  const tog=document.getElementById('stog_texpl');
+  if(tog)tog.textContent='▾';
 }
 function autoSaveNotes(){
   const ta=document.getElementById('studyNotes');
