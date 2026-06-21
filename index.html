@@ -866,13 +866,6 @@ function renderStudy(s){
         <div class="sec-body"><div class="resume-box">${s.resume}</div></div>
       </div>`:''}
       <div class="section">
-        <div class="sec-head" onclick="toggleSec('texpl')">
-          📚 Textes d'explication — 4 périodes
-          <span class="sec-tog" id="stog_texpl">▸</span>
-        </div>
-        <div class="sec-body collapsed" id="sec_texpl">${perHtml}</div>
-      </div>
-      <div class="section">
         <div class="sec-head">✨ La Pensée</div>
         <div class="sec-body">
           <div class="pensee-box">
@@ -886,6 +879,13 @@ function renderStudy(s){
             <button onclick="regenererAvecPensee()">🔄 Régénérer</button>
           </div>
         </div>
+      </div>
+      <div class="section">
+        <div class="sec-head" onclick="toggleSec('texpl')">
+          📚 Textes d'explication — 4 périodes
+          <span class="sec-tog" id="stog_texpl">▸</span>
+        </div>
+        <div class="sec-body collapsed" id="sec_texpl">${perHtml}</div>
       </div>
       <div class="section">
         <div class="sec-head" onclick="toggleSec('volonte')">
