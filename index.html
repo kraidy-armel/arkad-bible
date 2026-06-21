@@ -221,6 +221,10 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
 /* ── SAVED SCREEN ── */
 .saved-screen{padding:14px 13px 100px}
 .saved-hdr{font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:0.9px;margin-bottom:12px}
+.account-banner{margin-bottom:12px;padding:10px 12px;border-radius:10px;font-size:12px;line-height:1.5;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.account-banner.guest{background:rgba(184,134,11,0.08);border:1px solid rgba(184,134,11,0.25);color:var(--ink2)}
+.account-banner.logged{background:rgba(45,90,39,0.08);border:1px solid rgba(45,90,39,0.25);color:var(--ink2)}
+.account-banner button{padding:6px 10px;border-radius:7px;border:none;background:var(--accent);color:var(--gold-light);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
 .saved-empty{color:var(--ink2);font-size:14px;text-align:center;padding:30px 20px;line-height:1.6}
 .saved-item{
   padding:13px 14px;border:0.5px solid var(--border);border-radius:12px;
@@ -316,6 +320,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
   </div>
   <!-- NAV BAR -->
   <div class="nav-bar">
+    <button class="nav-btn" id="authBtn" onclick="onAuthBtnClick()" title="Se connecter">🔑</button>
     <span class="nav-title" id="navTitle">EFBC Mission God</span>
     <button class="nav-btn" onclick="showScreen('saved')" title="Mes études">📚</button>
   </div>
@@ -396,6 +401,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
   <div class="screen" id="screen-saved">
     <div class="saved-screen">
       <div class="saved-hdr">🔖 Mes études enregistrées</div>
+      <div class="account-banner guest" id="accountBanner"></div>
       <div id="savedList"></div>
     </div>
   </div>
@@ -414,11 +420,109 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
     </div>
   </div>
 </div><!-- .app -->
+<!-- Firebase (compat) : authentification Google + Firestore pour les comptes
+     utilisateurs et la synchronisation des études enregistrées. -->
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
 <script>
 // ── CONFIG ──
 // URL de votre proxy Render. Remplacez par l'URL réelle après le déploiement
 // (ex : https://arkad-bible-proxy.onrender.com/api/messages)
 const PROXY_URL = 'https://arkad-bible-proxy.onrender.com/api/messages';
+
+// ── FIREBASE (comptes utilisateurs + synchronisation cloud) ──
+// Remplacez ces valeurs par la config de VOTRE projet Firebase
+// (Console Firebase > Paramètres du projet > Vos applications > app Web).
+// Ces valeurs ne sont pas secrètes : elles sont conçues pour être visibles
+// côté client (la sécurité réelle vient des règles Firestore).
+const firebaseConfig = {
+  apiKey: "REMPLACER_API_KEY",
+  authDomain: "REMPLACER.firebaseapp.com",
+  projectId: "REMPLACER",
+  storageBucket: "REMPLACER.appspot.com",
+  messagingSenderId: "REMPLACER",
+  appId: "REMPLACER"
+};
+let auth = null, db = null, currentUser = null;
+try {
+  if (firebaseConfig.apiKey && !firebaseConfig.apiKey.startsWith('REMPLACER')) {
+    firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    db = firebase.firestore();
+  } else {
+    console.warn('Firebase non configuré : le login fonctionnera dès que firebaseConfig sera renseigné.');
+  }
+} catch (e) {
+  console.error('Erreur d’initialisation Firebase :', e);
+}
+
+function slugifyRef(ref) {
+  return (ref || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'etude';
+}
+function signInWithGoogle() {
+  if (!auth) { alert('Le login n’est pas encore configuré côté app (firebaseConfig manquant).'); return; }
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider).catch(err => alert('Erreur de connexion : ' + err.message));
+}
+function signOutUser() {
+  if (!auth) return;
+  auth.signOut();
+}
+function onAuthBtnClick() {
+  if (currentUser) {
+    if (confirm('Se déconnecter de ' + (currentUser.displayName || currentUser.email) + ' ?')) signOutUser();
+  } else {
+    signInWithGoogle();
+  }
+}
+function updateAuthUI() {
+  const btn = document.getElementById('authBtn');
+  const banner = document.getElementById('accountBanner');
+  if (btn) {
+    if (currentUser) {
+      btn.textContent = '👤';
+      btn.title = 'Connecté : ' + (currentUser.displayName || currentUser.email) + ' (toucher pour se déconnecter)';
+      btn.style.background = 'rgba(45,90,39,0.35)';
+    } else {
+      btn.textContent = '🔑';
+      btn.title = 'Se connecter avec Google';
+      btn.style.background = '';
+    }
+  }
+  if (banner) {
+    if (currentUser) {
+      banner.className = 'account-banner logged';
+      banner.innerHTML = `<span>✓ Connecté comme <strong>${currentUser.displayName || currentUser.email}</strong> — vos études sont synchronisées.</span><button onclick="onAuthBtnClick()">Déconnexion</button>`;
+    } else {
+      banner.className = 'account-banner guest';
+      banner.innerHTML = `<span>👤 Non connecté — vos études restent sur cet appareil seulement.</span><button onclick="signInWithGoogle()">Se connecter</button>`;
+    }
+  }
+}
+async function loadStudiesFromCloud() {
+  if (!currentUser || !db) return;
+  try {
+    const snap = await db.collection('users').doc(currentUser.uid).collection('studies').orderBy('updatedAt', 'desc').get();
+    savedStudies = snap.docs.map(d => ({ ...d.data(), _docId: d.id }));
+  } catch (e) {
+    console.error('Erreur chargement études cloud :', e);
+  }
+  if (document.getElementById('screen-saved')?.classList.contains('active')) renderSaved();
+}
+if (auth) {
+  auth.onAuthStateChanged(async (user) => {
+    currentUser = user;
+    updateAuthUI();
+    if (user) {
+      await loadStudiesFromCloud();
+    } else {
+      try { savedStudies = JSON.parse(localStorage.getItem('arkad_studies') || '[]'); } catch (e) { savedStudies = []; }
+    }
+    if (document.getElementById('screen-saved')?.classList.contains('active')) renderSaved();
+  });
+}
 
 // ── CLOCK ──
 function updateClock(){
@@ -435,6 +539,7 @@ let currentStudy=null;
 let studyNotes={};
 let savedStudies=[];
 try{savedStudies=JSON.parse(localStorage.getItem('arkad_studies')||'[]')}catch(e){}
+updateAuthUI();
 // ── NAVIGATION ──
 function showScreen(t){
   ['input','study','saved'].forEach(id=>{
@@ -1032,7 +1137,7 @@ function autoSaveNotes(){
   if(ta&&currentStudy)studyNotes[currentStudy.reference]=ta.value;
 }
 // ── SAVE ──
-function saveStudy(){
+async function saveStudy(){
   if(!currentStudy)return;
   const n=studyNotes[currentStudy.reference]||document.getElementById('studyNotes')?.value||'';
   const entry={
@@ -1041,14 +1146,26 @@ function saveStudy(){
     pensee:currentStudy.pensee?.ref,
     notes:n,
     date:new Date().toLocaleDateString('fr-FR'),
+    updatedAt:Date.now(),
     data:currentStudy
   };
-  const idx=savedStudies.findIndex(x=>x.ref===currentStudy.reference);
-  if(idx>=0)savedStudies[idx]=entry;else savedStudies.unshift(entry);
-  try{localStorage.setItem('arkad_studies',JSON.stringify(savedStudies))}catch(e){}
+  const btn=event.target;
+  if(currentUser&&db){
+    try{
+      const docId=slugifyRef(currentStudy.reference);
+      await db.collection('users').doc(currentUser.uid).collection('studies').doc(docId).set(entry);
+      await loadStudiesFromCloud();
+    }catch(e){
+      alert('Erreur de sauvegarde cloud : '+e.message);
+      return;
+    }
+  }else{
+    const idx=savedStudies.findIndex(x=>x.ref===currentStudy.reference);
+    if(idx>=0)savedStudies[idx]=entry;else savedStudies.unshift(entry);
+    try{localStorage.setItem('arkad_studies',JSON.stringify(savedStudies))}catch(e){}
+  }
   renderStudy(currentStudy);
   // petit feedback
-  const btn=event.target;
   btn.textContent='✓ Enregistrée !';
   setTimeout(()=>btn.textContent='🔖 Enregistrer',1500);
 }
