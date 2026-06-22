@@ -574,6 +574,38 @@ async function regenererAvecPensee(){
   const titre=currentStudy.titre||'';
   await genererEtude(ref,titre,newRef);
 }
+// Règles des 4 périodes (méthode Dr. Arkad) — réutilisées pour construire les
+// 4 appels parallèles de la section "Textes d'explication" (voir genererEtude).
+const PERIODE_DEFS={
+  histoire:{
+    angleDef:"L'identité du chrétien",
+    lienCtx:"lien explicite avec la Pensée sous l'angle de l'identité du chrétien",
+    rules:`AT autorisé UNIQUEMENT : Josué, Juges, Ruth, 1 Samuel, 2 Samuel, 1 Rois, 2 Rois, 1 Chroniques, 2 Chroniques, Esdras, Néhémie, Esther.
+NT autorisé UNIQUEMENT : Actes des Apôtres.
+INTERDIT ici : Genèse à Deutéronome, tout prophète, tout poétique, tout évangile, toute épître, l'Apocalypse.`
+  },
+  loi:{
+    angleDef:'La volonté de Dieu à faire',
+    lienCtx:"ce que Dieu veut que le chrétien fasse ou ne fasse pas, en lien avec la Pensée",
+    rules:`AT autorisé UNIQUEMENT : Genèse, Exode, Lévitique, Nombres, Deutéronome.
+NT autorisé UNIQUEMENT : Matthieu, Marc, Luc, Jean (les 4 évangiles).
+INTERDIT ici : tout livre historique (Josué-Esther), tout prophète, tout poétique, Actes, toute épître, l'Apocalypse.`
+  },
+  prophetie:{
+    angleDef:'La volonté à accomplir',
+    lienCtx:"résultat de l'obéissance à la Loi, en lien avec la Pensée",
+    rules:`AT autorisé UNIQUEMENT : Ésaïe, Jérémie, Lamentations, Ézéchiel, Daniel, Osée, Joël, Amos, Abdias, Jonas, Michée, Nahum, Habacuc, Sophonie, Aggée, Zacharie, Malachie.
+NT autorisé UNIQUEMENT : Apocalypse.
+INTERDIT ici : Pentateuque, livres historiques, poétiques, évangiles, Actes, épîtres.`
+  },
+  poesie:{
+    angleDef:'Le modèle de vie à transmettre',
+    lienCtx:"modèle de vie à laisser aux disciples, en lien avec la Pensée",
+    rules:`AT autorisé UNIQUEMENT : Job, Psaumes, Proverbes, Ecclésiaste, Cantique des Cantiques.
+NT autorisé UNIQUEMENT : Romains, 1 Corinthiens, 2 Corinthiens, Galates, Éphésiens, Philippiens, Colossiens, 1 Thessaloniciens, 2 Thessaloniciens, 1 Timothée, 2 Timothée, Tite, Philémon, Hébreux, Jacques, 1 Pierre, 2 Pierre, 1 Jean, 2 Jean, 3 Jean, Jude (les épîtres).
+INTERDIT ici : Pentateuque, livres historiques, prophètes, évangiles, Actes, Apocalypse.`
+  }
+};
 async function genererEtude(ref,titre,forcedPenseeRef){
   if(!ref){
     document.getElementById('pericInput').focus();
@@ -607,10 +639,10 @@ async function genererEtude(ref,titre,forcedPenseeRef){
   const forcedPenseeBlock=forcedPenseeRef
     ?`IMPORTANT : L'UTILISATEUR A LUI-MÊME DÉSIGNÉ LA PENSÉE DE CETTE PÉRICOPE : ${forcedPenseeRef}. N'EN CHOISIS PAS UNE AUTRE — utilise EXACTEMENT cette référence comme "pensee.ref" (et le texte correspondant comme "pensee.texte"), et assure la cohérence de toute l'étude (preuves, périodes, volonté) avec ce choix.\n\n`
     :'';
-  const prompt=`Tu es un expert en exégèse biblique utilisant la méthode Dr. Arkad. Analyse la péricope suivante et génère une étude complète en JSON.
+  const corePrompt=`Tu es un expert en exégèse biblique utilisant la méthode Dr. Arkad. Analyse la péricope suivante.
 ${singleVerseBlock}${forcedPenseeBlock}${crossRefBlock}
 PÉRICOPE : "${ref}"${titre?'\nTITRE : "'+titre+'"':''}
-Génère UNIQUEMENT un JSON valide avec cette structure exacte :
+Génère UNIQUEMENT un JSON valide avec cette structure exacte (les 4 périodes d'explication sont générées séparément, ne les inclus PAS ici) :
 {
   "titre": "titre de la péricope",
   "reference": "${ref}",
@@ -619,188 +651,42 @@ Génère UNIQUEMENT un JSON valide avec cette structure exacte :
     {"n": 1, "texte": "texte du verset en français Louis Segond 1910"}
   ],
   "preuves": [
-    {"ref": "Livre ch:v", "texte": "texte complet LS1910"}
+    {"ref": "Livre ch:v", "texte": "texte complet LS1910", "lien": "lien bref entre ce texte de preuve et la Pensée"}
   ],
   "pensee": {
     "ref": "Livre ch:v",
     "texte": "verset central qui reflète et résume tous les textes de preuves",
-    "commentaire": "commentaire simple et clair expliquant pourquoi ce verset résume la péricope — même style simple et clair que l'explication de la Volonté de Dieu"
-  },
-  "periodes": {
-    "histoire": {
-      "angle": "L'identité du chrétien",
-      "at": [
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "lien explicite avec la Pensée sous l'angle de l'identité du chrétien"},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
-      ],
-      "nt": [
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "lien explicite avec la Pensée sous l'angle de l'identité du chrétien"},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
-      ]
-    },
-    "loi": {
-      "angle": "La volonté de Dieu à faire",
-      "at": [
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "ce que Dieu veut que le chrétien fasse ou ne fasse pas, en lien avec la Pensée"},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
-      ],
-      "nt": [
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "ce que Dieu veut que le chrétien fasse ou ne fasse pas, en lien avec la Pensée"},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
-      ]
-    },
-    "prophetie": {
-      "angle": "La volonté à accomplir",
-      "at": [
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "résultat de l'obéissance à la Loi, en lien avec la Pensée"},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
-      ],
-      "nt": [
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "résultat de l'obéissance à la Loi, en lien avec la Pensée"},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
-      ]
-    },
-    "poesie": {
-      "angle": "Le modèle de vie à transmettre",
-      "at": [
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "modèle de vie à laisser aux disciples, en lien avec la Pensée"},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
-      ],
-      "nt": [
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "modèle de vie à laisser aux disciples, en lien avec la Pensée"},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-        {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
-      ]
-    }
+    "commentaire": "commentaire simple et clair expliquant pourquoi ce verset résume la péricope"
   },
   "volonte": {
     "ref": "Livre ch:v (DOIT être une référence à l'intérieur de la péricope ${ref}, différente du verset de la Pensée si possible)",
     "texte": "texte LS1910 — OBLIGATOIREMENT un verset pris DANS la péricope ${ref} elle-même (comme la Pensée), qui exprime la Volonté de Dieu",
     "type": "cause",
-    "explication": "Explication du lien entre la Volonté de Dieu et la Pensée (cause ou conséquence)",
-    "periodes": {
-      "histoire": {
-        "angle": "L'identité du chrétien",
-        "at": [
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "lien avec la Volonté"},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
-        ],
-        "nt": [
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "lien avec la Volonté"},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
-        ]
-      },
-      "loi": {
-        "angle": "La volonté de Dieu à faire",
-        "at": [
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "lien avec la Volonté"},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
-        ],
-        "nt": [
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "lien avec la Volonté"},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
-        ]
-      },
-      "prophetie": {
-        "angle": "La volonté à accomplir",
-        "at": [
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "lien avec la Volonté"},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
-        ],
-        "nt": [
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "lien avec la Volonté"},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
-        ]
-      },
-      "poesie": {
-        "angle": "Le modèle de vie à transmettre",
-        "at": [
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "lien avec la Volonté"},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
-        ],
-        "nt": [
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "lien avec la Volonté"},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
-          {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
-        ]
-      }
-    }
+    "explication": "Explication du lien entre la Volonté de Dieu et la Pensée (cause ou conséquence)"
   }
 }
-RÈGLES IMPORTANTES POUR LES 4 PÉRIODES (méthode Dr. Arkad) — c'est la règle la plus souvent violée, sois EXTRÊMEMENT rigoureux. Chaque période a EXACTEMENT deux zones de livres autorisés (une AT, une NT) et AUCUN AUTRE LIVRE n'est permis dans cette période :
-
-1. "histoire" — AT autorisé UNIQUEMENT : Josué, Juges, Ruth, 1 Samuel, 2 Samuel, 1 Rois, 2 Rois, 1 Chroniques, 2 Chroniques, Esdras, Néhémie, Esther.
-   NT autorisé UNIQUEMENT : Actes des Apôtres.
-   INTERDIT ici : Genèse à Deutéronome, tout prophète, tout poétique, tout évangile, toute épître, l'Apocalypse.
-
-2. "loi" — AT autorisé UNIQUEMENT : Genèse, Exode, Lévitique, Nombres, Deutéronome.
-   NT autorisé UNIQUEMENT : Matthieu, Marc, Luc, Jean (les 4 évangiles).
-   INTERDIT ici : tout livre historique (Josué-Esther), tout prophète, tout poétique, Actes, toute épître, l'Apocalypse.
-
-3. "prophetie" — AT autorisé UNIQUEMENT : Ésaïe, Jérémie, Lamentations, Ézéchiel, Daniel, Osée, Joël, Amos, Abdias, Jonas, Michée, Nahum, Habacuc, Sophonie, Aggée, Zacharie, Malachie.
-   NT autorisé UNIQUEMENT : Apocalypse.
-   INTERDIT ici : Pentateuque, livres historiques, poétiques, évangiles, Actes, épîtres.
-
-4. "poesie" — AT autorisé UNIQUEMENT : Job, Psaumes, Proverbes, Ecclésiaste, Cantique des Cantiques.
-   NT autorisé UNIQUEMENT : Romains, 1 Corinthiens, 2 Corinthiens, Galates, Éphésiens, Philippiens, Colossiens, 1 Thessaloniciens, 2 Thessaloniciens, 1 Timothée, 2 Timothée, Tite, Philémon, Hébreux, Jacques, 1 Pierre, 2 Pierre, 1 Jean, 2 Jean, 3 Jean, Jude (les épîtres).
-   INTERDIT ici : Pentateuque, livres historiques, prophètes, évangiles, Actes, Apocalypse.
-
-Avant de répondre, vérifie pour CHAQUE texte "at" et "nt" de CHAQUE période que le livre cité figure bien dans la liste "autorisé" correspondante. Si un livre ne figure dans aucune liste pour la zone choisie, change de texte.
-
-RÈGLE OBLIGATOIRE SUR LE NOMBRE DE TEXTES : pour CHACUNE des 4 périodes (histoire, loi, prophetie, poesie), "at" et "nt" sont des TABLEAUX d'EXACTEMENT 4 textes chacun (donc 4 AT + 4 NT = 8 textes par période, soit 32 textes au total pour les 4 périodes) — cherche ces textes à travers TOUTE la Bible (pas seulement la péricope), en respectant strictement la liste de livres autorisés pour la période et la zone (AT/NT) concernées. Jamais moins de 4 éléments dans un tableau "at" ou "nt". Fais exactement de même pour "volonte.periodes" (4 at + 4 nt par période également, donc 32 textes supplémentaires).
-
 RÈGLES GÉNÉRALES :
 - Tous les textes en français Louis Segond 1910
 - "resume" = un résumé bref et précis de la péricope, 2 à 3 phrases simples, compréhensibles immédiatement, qui situent le contexte et l'enseignement central — à placer juste avant les textes d'explication
 - La Pensée = le verset de la péricope qui reflète et résume TOUS les textes de preuves
 - "pensee.commentaire" = un commentaire simple et clair (même registre que "volonte.explication") qui explique pourquoi ce verset résume la péricope — il sera affiché juste après les textes d'explication
-- Les preuves = ${crossRefList.length?'utilise UNIQUEMENT la liste de références croisées exactes fournie ci-dessus, dans le même ordre, sans en omettre ni en fusionner aucune — recopie chaque référence TELLE QUELLE (y compris les virgules type "19:1, 16")':'références classiques LS1910 de cette péricope (celles en tête dans les Bibles annotées)'}
+- Les preuves = ${crossRefList.length?'utilise UNIQUEMENT la liste de références croisées exactes fournie ci-dessus, dans le même ordre, sans en omettre ni en fusionner aucune — recopie chaque référence TELLE QUELLE (y compris les virgules type "19:1, 16"), et écris pour chacune un "lien" bref avec la Pensée':'références classiques LS1910 de cette péricope (celles en tête dans les Bibles annotées), avec un "lien" bref avec la Pensée pour chacune'}
 - La Volonté de Dieu = soit la cause (pourquoi Dieu agit) soit la conséquence (ce qui résulte) de la Pensée
 - Réponds UNIQUEMENT avec le JSON, aucun texte avant ni après, aucun markdown`;
   try{
-    const resp=await fetch(PROXY_URL,{
+    const coreResp=await fetch(PROXY_URL,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         model:'claude-sonnet-4-6',
-        max_tokens:16000,
-        messages:[{role:'user',content:prompt}]
+        max_tokens:4000,
+        messages:[{role:'user',content:corePrompt}]
       })
     });
-    const data=await resp.json();
-    if(data.error)throw new Error(data.error.message);
-    const raw=data.content[0].text.trim().replace(/^```json?\s*/,'').replace(/\s*```$/,'');
-    const study=JSON.parse(raw);
+    const coreData=await coreResp.json();
+    if(coreData.error)throw new Error(coreData.error.message);
+    const coreRaw=coreData.content[0].text.trim().replace(/^```json?\s*/,'').replace(/\s*```$/,'');
+    const study=JSON.parse(coreRaw);
 
     // L'IA a parfois tendance à simplifier/raccourcir une référence groupée
     // (ex. "Ésaïe 19:1, 16" -> "Ésaïe 19:1") en recopiant les preuves. On
@@ -817,12 +703,80 @@ RÈGLES GÉNÉRALES :
       }));
     }
 
+    function asArray(v){ return Array.isArray(v)?v:(v?[v]:[]); }
+
+    // Les 4 périodes (Histoire/Loi/Prophétie/Poésie) sont générées en 4
+    // appels indépendants envoyés EN PARALLÈLE (Promise.all) plutôt qu'un
+    // seul énorme appel séquentiel — chaque appel ne produit que 16 textes
+    // (8 pour la Pensée + 8 pour la Volonté) au lieu de 64 d'un coup, donc le
+    // temps d'attente total correspond au plus lent des 4, pas à leur somme.
+    const periodKeys=['histoire','loi','prophetie','poesie'];
+    const periodPromises=periodKeys.map(async key=>{
+      const pd=PERIODE_DEFS[key];
+      const periodPrompt=`Tu es un expert en exégèse biblique (méthode Dr. Arkad). Péricope étudiée : "${ref}".
+La Pensée de cette péricope : "${study.pensee&&study.pensee.texte}" (${study.pensee&&study.pensee.ref}).
+La Volonté de Dieu liée à cette péricope : "${study.volonte&&study.volonte.texte}" (${study.volonte&&study.volonte.ref}), type : ${study.volonte&&study.volonte.type}.
+
+Pour la période "${key}" (angle par défaut : "${pd.angleDef}"), règles de livres autorisés — AUCUN AUTRE LIVRE n'est permis dans cette période :
+${pd.rules}
+
+Génère UNIQUEMENT ce JSON (cherche les textes à travers TOUTE la Bible, pas seulement la péricope, en respectant strictement les livres autorisés ci-dessus) :
+{
+  "angle": "${pd.angleDef}",
+  "at": [
+    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "${pd.lienCtx}"},
+    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
+    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
+    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
+  ],
+  "nt": [
+    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "${pd.lienCtx}"},
+    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
+    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
+    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
+  ],
+  "volonteAt": [
+    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "lien avec la Volonté"},
+    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
+    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
+    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
+  ],
+  "volonteNt": [
+    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "lien avec la Volonté"},
+    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
+    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
+    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
+  ]
+}
+RÈGLE OBLIGATOIRE : "at", "nt", "volonteAt" et "volonteNt" sont CHACUN des TABLEAUX d'EXACTEMENT 4 éléments (16 textes au total pour cette période). "at" et "volonteAt" respectent UNIQUEMENT la liste de livres AT autorisée ci-dessus ; "nt" et "volonteNt" UNIQUEMENT la liste NT autorisée. Vérifie chaque référence avant de répondre — aucun autre livre n'est toléré. Réponds UNIQUEMENT avec le JSON, aucun texte avant ni après, aucun markdown.`;
+      const resp=await fetch(PROXY_URL,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          model:'claude-sonnet-4-6',
+          max_tokens:4000,
+          messages:[{role:'user',content:periodPrompt}]
+        })
+      });
+      const data=await resp.json();
+      if(data.error)throw new Error('Période '+key+' : '+data.error.message);
+      const raw=data.content[0].text.trim().replace(/^```json?\s*/,'').replace(/\s*```$/,'');
+      return {key,result:JSON.parse(raw)};
+    });
+    const lr=document.getElementById('loadingRef');
+    if(lr)lr.textContent=ref+' — 4 périodes en cours (en parallèle)…';
+    const periodOutcomes=await Promise.all(periodPromises);
+    study.periodes={};
+    study.volonte=study.volonte||{};
+    study.volonte.periodes={};
+    for(const {key,result} of periodOutcomes){
+      study.periodes[key]={angle:result.angle,at:asArray(result.at),nt:asArray(result.nt)};
+      study.volonte.periodes[key]={angle:result.angle,at:asArray(result.volonteAt),nt:asArray(result.volonteNt)};
+    }
+
     // Remplace le texte rédigé par l'IA par le texte EXACT Louis Segond 1910
     // (péricope, preuves, périodes, volonté) — l'IA ne fait plus que choisir
     // les références et l'analyse, pas le texte biblique lui-même.
-    // "at"/"nt" sont des tableaux de 4 textes ; on normalise en tableau au cas
-    // où l'IA renverrait un seul objet par erreur.
-    function asArray(v){ return Array.isArray(v)?v:(v?[v]:[]); }
     try{
       const refsToFetch=new Set();
       if(study.reference)refsToFetch.add(study.reference);
