@@ -1132,14 +1132,14 @@ function shareStudy(){
   if(!currentStudy)return;
   const s=currentStudy;
   const n=studyNotes[s.reference]||'';
-  const preuves=(s.preuves||[]).map(p=>'• '+p.ref+(p.texte?' : "'+p.texte+'"':'')).join('\n');
+  const preuves=(s.preuves||[]).map(p=>'• '+p.ref).join('\n');
   const periodNames={histoire:'🕰 HISTOIRE',loi:'⚖️ LOI',prophetie:'👁 PROPHÉTIE',poesie:'🎶 POÉSIE'};
   let periodesText='';
   for(const [key,label] of Object.entries(periodNames)){
     const p=s.periodes&&s.periodes[key];
     if(!p)continue;
-    const at=(p.at||[]).map(it=>'  • '+it.ref+(it.texte?' — "'+it.texte+'"':'')).join('\n');
-    const nt=(p.nt||[]).map(it=>'  • '+it.ref+(it.texte?' — "'+it.texte+'"':'')).join('\n');
+    const at=(p.at||[]).map(it=>'  • '+it.ref).join('\n');
+    const nt=(p.nt||[]).map(it=>'  • '+it.ref).join('\n');
     periodesText+='\n\n'+label+' — '+p.angle+'\n  [Ancien Testament]\n'+at+'\n  [Nouveau Testament]\n'+nt;
   }
   const text=
