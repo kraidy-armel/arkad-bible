@@ -623,17 +623,19 @@ async function genererEtude(ref,titre,forcedPenseeRef){
   const lr=document.getElementById('loadingRef');
   // Récupère les vraies références croisées (OpenBible.info) avant de construire le prompt,
   // pour que la section "preuves" soit fiable plutôt qu'inventée par l'IA.
-  let crossRefList=[];
-  try{
-    const crUrl=PROXY_URL.replace('/api/messages','/api/cross-refs')+'?ref='+encodeURIComponent(ref);
-    const crResp=await fetch(crUrl);
-    if(crResp.ok){
-      const crData=await crResp.json();
-      if(Array.isArray(crData.references))crossRefList=crData.references;
-    }
-  }catch(e){ /* on continue sans références croisées si l'appel échoue */ }
-  if(lr)lr.textContent=ref+' — Génération de la Pensée et des preuves…';
   const isSingleVerse=/:\d+$/.test(ref)&&!ref.includes('-');
+  let crossRefList=[];
+  if(!isSingleVerse){
+    try{
+      const crUrl=PROXY_URL.replace('/api/messages','/api/cross-refs')+'?ref='+encodeURIComponent(ref);
+      const crResp=await fetch(crUrl);
+      if(crResp.ok){
+        const crData=await crResp.json();
+        if(Array.isArray(crData.references))crossRefList=crData.references;
+      }
+    }catch(e){ /* on continue sans références croisées si l'appel échoue */ }
+  }
+  if(lr)lr.textContent=ref+' — Génération de la Pensée et des preuves…';
   const crossRefBlock=crossRefList.length
     ?`RÉFÉRENCES CROISÉES EXACTES POUR CETTE PÉRICOPE (issues d'une base de données de référence, pas inventées) — utilise EXCLUSIVEMENT ces références pour la section "preuves", dans cet ordre de pertinence :\n${crossRefList.map(r=>'- '+r).join('\n')}\n\n`
     :'';
@@ -692,6 +694,18 @@ RÈGLES GÉNÉRALES :
     const coreRaw=coreData.content[0].text.trim().replace(/^```json?\s*/,'').replace(/\s*```$/,'');
     const study=JSON.parse(coreRaw);
 
+    // Si verset seul, l'IA a identifié la vraie péricope dans study.reference —
+    // on récupère maintenant les références croisées sur CETTE péricope élargie.
+    if(isSingleVerse&&study.reference){
+      try{
+        const crUrl=PROXY_URL.replace('/api/messages','/api/cross-refs')+'?ref='+encodeURIComponent(study.reference);
+        const crResp=await fetch(crUrl);
+        if(crResp.ok){
+          const crData=await crResp.json();
+          if(Array.isArray(crData.references)&&crData.references.length)crossRefList=crData.references;
+        }
+      }catch(e){}
+    }
     // L'IA a parfois tendance à simplifier/raccourcir une référence groupée
     // (ex. "Ésaïe 19:1, 16" -> "Ésaïe 19:1") en recopiant les preuves. On
     // reconstruit donc "preuves" directement à partir de la liste exacte de
