@@ -727,7 +727,7 @@ RÈGLES GÉNÉRALES :
       }));
     }
 
-    function asArray(v); return Array.isArray(v)?v:(v?[v]:[]); }
+    function asArray(v){ return Array.isArray(v)?v:(v?[v]:[]); }
 
     // Les 4 périodes (Histoire/Loi/Prophétie/Poésie) sont générées en 4
     // appels indépendants envoyés EN PARALLÈLE (Promise.all) plutôt qu'un
