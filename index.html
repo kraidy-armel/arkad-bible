@@ -690,23 +690,27 @@ RÈGLES GÉNÉRALES :
     const coreRaw=coreData.content[0].text.trim().replace(/^```json?\s*/,'').replace(/\s*```$/,'');
     const study=JSON.parse(coreRaw);
 
-    // Si verset seul, l'IA a (normalement) élargi la péricope dans study.reference.
-    // On ne récupère les cross-refs de l'API QUE si l'IA a vraiment élargi
-    // (study.reference contient un intervalle, ex. "16:35-43") — sinon l'IA
-    // a échoué à identifier la péricope et on garde ses propres preuves.
-    if(isSingleVerse&&study.reference){
-      const expandedRef=study.reference;
-      const stillSingle=/:\d+$/.test(expandedRef)&&!expandedRef.includes('-');
-      if(!stillSingle){
-        try{
-          const crUrl=PROXY_URL.replace('/api/messages','/api/cross-refs')+'?ref='+encodeURIComponent(expandedRef);
-          const crResp=await fetch(crUrl);
-          if(crResp.ok){
-            const crData=await crResp.json();
-            if(Array.isArray(crData.references)&&crData.references.length)crossRefList=crData.references;
-          }
-        }catch(e){}
-      }
+    // effectiveRef = la véritable péricope à traiter.
+    // Si l'utilisateur a donné un verset seul et que l'IA l'a élargi dans
+    // study.reference (ex. "Ézéchiel 16:35-43"), on utilise cette péricope
+    // pour TOUT le reste (cross-refs, périodes, textes verbatim).
+    const effectiveRef=(()=>{
+      if(!isSingleVerse) return ref;
+      const r=study.reference||ref;
+      const stillSingle=/:\d+$/.test(r)&&!r.includes('-');
+      return stillSingle?ref:r;
+    })();
+    // Si la péricope a été élargie, on récupère les cross-refs pour elle
+    if(isSingleVerse&&effectiveRef!==ref){
+      crossRefList=[];
+      try{
+        const crUrl=PROXY_URL.replace('/api/messages','/api/cross-refs')+'?ref='+encodeURIComponent(effectiveRef);
+        const crResp=await fetch(crUrl);
+        if(crResp.ok){
+          const crData=await crResp.json();
+          if(Array.isArray(crData.references))crossRefList=crData.references;
+        }
+      }catch(e){}
     }
     // L'IA a parfois tendance à simplifier/raccourcir une référence groupée
     // (ex. "Ésaïe 19:1, 16" -> "Ésaïe 19:1") en recopiant les preuves. On
@@ -733,7 +737,7 @@ RÈGLES GÉNÉRALES :
     const periodKeys=['histoire','loi','prophetie','poesie'];
     const periodPromises=periodKeys.map(async key=>{
       const pd=PERIODE_DEFS[key];
-      const periodPrompt=`Tu es un expert en exégèse biblique (méthode Dr. Arkad). Péricope étudiée : "${ref}".
+      const periodPrompt=`Tu es un expert en exégèse biblique (méthode Dr. Arkad). Péricope étudiée : "${effectiveRef}".
 La Pensée de cette péricope : "${study.pensee&&study.pensee.texte}" (${study.pensee&&study.pensee.ref}).
 La Volonté de Dieu liée à cette péricope : "${study.volonte&&study.volonte.texte}" (${study.volonte&&study.volonte.ref}), type : ${study.volonte&&study.volonte.type}.
 
@@ -844,6 +848,7 @@ RÈGLE OBLIGATOIRE : "at", "nt", "volonteAt" et "volonteNt" sont CHACUN des TABL
     }catch(e){ /* en cas d'échec, on garde le texte rédigé par l'IA */ }
 
     study._requestedRef=ref;
+    study._generatedAt=new Date();
     currentStudy=study;
     setTimeout(()=>{
       document.getElementById('loadingScreen').classList.remove('show');
@@ -936,6 +941,7 @@ function renderStudy(s){
       <div class="study-meta">
         <span>📖 ${s.reference}</span>
         <span>🕊 Louis Segond 1910</span>
+        ${s._generatedAt?`<span>🕐 ${new Date(s._generatedAt).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</span>`:''}
       </div>
       ${(s._requestedRef&&s._requestedRef!==s.reference)?`<div class="requested-note">Demandé : ${s._requestedRef} → péricope étudiée : ${s.reference}</div>`:''}
     </div>
@@ -1225,3 +1231,4 @@ document.getElementById('manifestLink').href=URL.createObjectURL(blob);
 </script>
 </body>
 </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
