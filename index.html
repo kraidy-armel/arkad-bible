@@ -690,17 +690,23 @@ RÈGLES GÉNÉRALES :
     const coreRaw=coreData.content[0].text.trim().replace(/^```json?\s*/,'').replace(/\s*```$/,'');
     const study=JSON.parse(coreRaw);
 
-    // Si verset seul, l'IA a identifié la vraie péricope dans study.reference —
-    // on récupère maintenant les références croisées sur CETTE péricope élargie.
+    // Si verset seul, l'IA a (normalement) élargi la péricope dans study.reference.
+    // On ne récupère les cross-refs de l'API QUE si l'IA a vraiment élargi
+    // (study.reference contient un intervalle, ex. "16:35-43") — sinon l'IA
+    // a échoué à identifier la péricope et on garde ses propres preuves.
     if(isSingleVerse&&study.reference){
-      try{
-        const crUrl=PROXY_URL.replace('/api/messages','/api/cross-refs')+'?ref='+encodeURIComponent(study.reference);
-        const crResp=await fetch(crUrl);
-        if(crResp.ok){
-          const crData=await crResp.json();
-          if(Array.isArray(crData.references)&&crData.references.length)crossRefList=crData.references;
-        }
-      }catch(e){}
+      const expandedRef=study.reference;
+      const stillSingle=/:\d+$/.test(expandedRef)&&!expandedRef.includes('-');
+      if(!stillSingle){
+        try{
+          const crUrl=PROXY_URL.replace('/api/messages','/api/cross-refs')+'?ref='+encodeURIComponent(expandedRef);
+          const crResp=await fetch(crUrl);
+          if(crResp.ok){
+            const crData=await crResp.json();
+            if(Array.isArray(crData.references)&&crData.references.length)crossRefList=crData.references;
+          }
+        }catch(e){}
+      }
     }
     // L'IA a parfois tendance à simplifier/raccourcir une référence groupée
     // (ex. "Ésaïe 19:1, 16" -> "Ésaïe 19:1") en recopiant les preuves. On
@@ -708,7 +714,7 @@ RÈGLES GÉNÉRALES :
     // références croisées (crossRefList), dans le même ordre, en ne gardant
     // de l'IA que son "lien" explicatif (positionnel) — la référence elle-même
     // est désormais TOUJOURS la nôtre, jamais une recopie potentiellement altérée.
-    if(crossRefList.length){
+    if(crossRefList.length>=5){
       const aiPreuves=Array.isArray(study.preuves)?study.preuves:[];
       study.preuves=crossRefList.map((r,i)=>({
         ref:r,
