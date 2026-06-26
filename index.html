@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="EFBC Mission God">
-<title>EFBC Mission God â MÃ©thode Dr. Arkad</title>
+<title>EFBC Mission God — Méthode Dr. Arkad</title>
 <link rel="manifest" href="#" id="manifestLink">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -62,7 +62,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
 .tab i{display:block;font-size:18px;margin-bottom:2px}
 .screen{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;display:none;overscroll-behavior:contain}
 .screen.active{display:block}
-/* ââ INPUT SCREEN ââ */
+/* ── INPUT SCREEN ── */
 .input-screen{padding:20px 16px 100px}
 .input-hero{text-align:center;margin-bottom:22px;padding:20px 10px}
 .cross-icon{font-size:44px;margin-bottom:10px;color:var(--gold)}
@@ -101,7 +101,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
   font-size:12px;color:var(--accent);background:var(--parch);cursor:pointer;font-weight:500;
 }
 .chip:active{background:var(--scroll)}
-/* ââ LOADING SCREEN ââ */
+/* ── LOADING SCREEN ── */
 .loading-screen{
   flex:1;padding:30px 20px;text-align:center;
   display:none;flex-direction:column;align-items:center;justify-content:center;
@@ -119,7 +119,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
 .s-done{color:var(--green)}
 .s-active{color:var(--gold);animation:pulse 1s infinite}
 .s-wait{color:var(--ink3);opacity:0.4}
-/* ââ STUDY SCREEN ââ */
+/* ── STUDY SCREEN ── */
 .study-header{padding:13px 15px 11px;background:var(--parch);border-bottom:0.5px solid var(--border)}
 .study-titre{font-size:18px;font-weight:700;color:var(--accent);font-family:Georgia,serif;margin-bottom:3px}
 .study-meta{font-size:11px;color:var(--ink3);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -218,7 +218,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
 }
 .fbtn.save{background:var(--accent);color:var(--gold-light);border-color:var(--accent)}
 .fbtn:active{opacity:0.8;transform:scale(0.97)}
-/* ââ SAVED SCREEN ââ */
+/* ── SAVED SCREEN ── */
 .saved-screen{padding:14px 13px 100px}
 .saved-hdr{font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:0.9px;margin-bottom:12px}
 .account-banner{margin-bottom:12px;padding:10px 12px;border-radius:10px;font-size:12px;line-height:1.5;display:flex;align-items:center;justify-content:space-between;gap:8px}
@@ -235,7 +235,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
 .si-ref{font-size:11px;color:var(--ink3);margin-top:1px}
 .si-pensee{font-size:12px;color:var(--ink2);margin-top:4px;font-style:italic}
 .si-meta{font-size:10px;color:var(--ink3);margin-top:5px;display:flex;gap:8px}
-/* ââ MODAL ââ */
+/* ── MODAL ── */
 .modal-overlay{
   position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:50;
   display:none;align-items:flex-end;justify-content:center;
@@ -259,7 +259,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
 .modal-body{padding:16px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
 .modal-verse-text{font-size:16px;font-family:Georgia,serif;font-style:italic;color:var(--ink);line-height:1.78;margin-bottom:12px}
 .modal-verse-ref{font-size:12px;font-weight:700;color:var(--gold)}
-/* ââ ERROR ââ */
+/* ── ERROR ── */
 .error-box{
   margin:20px 15px;padding:16px;
   background:rgba(139,20,20,0.07);border:0.5px solid rgba(139,20,20,0.2);
@@ -271,7 +271,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
   font-weight:700;cursor:pointer;
 }
 .retry-btn:active{opacity:0.85}
-/* ââ PERIODE COLOR THEMES ââ */
+/* ── PERIODE COLOR THEMES ── */
 .ph{background:rgba(139,69,19,0.05);border-color:rgba(139,69,19,0.16)}
 .ph .periode-head{background:rgba(139,69,19,0.07)}
 .ph .periode-lbl{color:var(--h-color)}
@@ -320,20 +320,20 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
   </div>
   <!-- NAV BAR -->
   <div class="nav-bar">
-    <button class="nav-btn" id="authBtn" onclick="onAuthBtnClick()" title="Se connecter">ð</button>
+    <button class="nav-btn" id="authBtn" onclick="onAuthBtnClick()" title="Se connecter">🔑</button>
     <span class="nav-title" id="navTitle">EFBC Mission God</span>
-    <button class="nav-btn" onclick="showScreen('saved')" title="Mes Ã©tudes">ð</button>
+    <button class="nav-btn" onclick="showScreen('saved')" title="Mes études">📚</button>
   </div>
   <!-- TAB BAR -->
   <div class="tab-bar">
     <div class="tab active" id="tab-input" onclick="showScreen('input')">
-      <i>ð</i>PÃ©ricope
+      <i>🔍</i>Péricope
     </div>
     <div class="tab" id="tab-study" onclick="showScreen('study')">
-      <i>ð</i>Ãtude
+      <i>📖</i>Étude
     </div>
     <div class="tab" id="tab-saved" onclick="showScreen('saved')">
-      <i>ð</i>EnregistrÃ©es
+      <i>🔖</i>Enregistrées
     </div>
   </div>
   <!-- SCREEN: INPUT -->
@@ -350,57 +350,57 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
           <rect x="139" y="288" width="22" height="14" rx="2" fill="#ffffff"/>
           <path d="M150 270 C147 278 147 284 150 288 C153 284 153 278 150 270 Z" fill="#e8742c"/>
         </svg>
-        <div class="input-hero-title">Ãtude de pÃ©ricope</div>
-        <div class="input-hero-sub">Saisissez une pÃ©ricope biblique et l'IA gÃ©nÃ¨re l'Ã©tude complÃ¨te selon la mÃ©thode Dr. Arkad â PensÃ©e, Preuves, 4 PÃ©riodes, VolontÃ© de Dieu</div>
+        <div class="input-hero-title">Étude de péricope</div>
+        <div class="input-hero-sub">Saisissez une péricope biblique et l'IA génère l'étude complète selon la méthode Dr. Arkad — Pensée, Preuves, 4 Périodes, Volonté de Dieu</div>
       </div>
       <div class="input-card">
-        <div class="field-label">ð RÃ©fÃ©rence de la pÃ©ricope</div>
+        <div class="field-label">📌 Référence de la péricope</div>
         <input class="field-input" id="pericInput" type="text"
           placeholder="Ex : Jean 10:11-16"
           autocomplete="off" autocorrect="off" spellcheck="false" />
         <div class="field-gap"></div>
-        <div class="field-label">ð· Titre (optionnel)</div>
+        <div class="field-label">🏷 Titre (optionnel)</div>
         <input class="field-input" id="titreInput" type="text"
           placeholder="Ex : Le bon berger"
           autocomplete="off" />
         <button class="analyse-btn" id="analyseBtn" onclick="lancerAnalyse()">
-          â¨ GÃ©nÃ©rer l'Ã©tude complÃ¨te
+          ✨ Générer l'étude complète
         </button>
       </div>
       <div class="examples-section">
-        <div class="examples-label">â¡ Exemples rapides</div>
+        <div class="examples-label">⚡ Exemples rapides</div>
         <div class="chips">
           <span class="chip" onclick="fillEx('Jean 10:11-16','Le bon berger')">Jean 10:11-16</span>
-          <span class="chip" onclick="fillEx('ÃzÃ©chiel 34:23-25','Le vrai berger')">ÃzÃ©chiel 34:23-25</span>
-          <span class="chip" onclick="fillEx('2 Corinthiens 5:17','La nouvelle crÃ©ation')">2 Cor 5:17</span>
+          <span class="chip" onclick="fillEx('Ézéchiel 34:23-25','Le vrai berger')">Ézéchiel 34:23-25</span>
+          <span class="chip" onclick="fillEx('2 Corinthiens 5:17','La nouvelle création')">2 Cor 5:17</span>
           <span class="chip" onclick="fillEx('Romains 8:1-4','Aucune condamnation')">Romains 8:1-4</span>
-          <span class="chip" onclick="fillEx('GenÃ¨se 28:10-15','Jacob Ã  BÃ©thel')">GenÃ¨se 28:10-15</span>
+          <span class="chip" onclick="fillEx('Genèse 28:10-15','Jacob à Béthel')">Genèse 28:10-15</span>
           <span class="chip" onclick="fillEx('Psaume 23:1-6','Le Seigneur est mon berger')">Psaume 23:1-6</span>
-          <span class="chip" onclick="fillEx('Jean 3:16-17','Dieu a tant aimÃ©')">Jean 3:16-17</span>
-          <span class="chip" onclick="fillEx('ÃphÃ©siens 1:3-6','BÃ©ni de toute bÃ©nÃ©diction')">ÃphÃ©siens 1:3-6</span>
+          <span class="chip" onclick="fillEx('Jean 3:16-17','Dieu a tant aimé')">Jean 3:16-17</span>
+          <span class="chip" onclick="fillEx('Éphésiens 1:3-6','Béni de toute bénédiction')">Éphésiens 1:3-6</span>
         </div>
       </div>
     </div>
   </div>
   <!-- SCREEN: LOADING (not a tab, shown/hidden) -->
   <div class="loading-screen" id="loadingScreen">
-    <div class="loading-cross">â</div>
-    <div class="loading-title">Ãtude en coursâ¦</div>
+    <div class="loading-cross">✝</div>
+    <div class="loading-title">Étude en cours…</div>
     <div class="loading-ref" id="loadingRef">Jean 10:11-16</div>
   </div>
   <!-- SCREEN: STUDY -->
   <div class="screen" id="screen-study">
     <div id="studyContent">
       <div style="padding:30px 20px;text-align:center;color:var(--ink3);font-size:14px;line-height:1.6">
-        â<br><br>
-        Saisissez une pÃ©ricope dans l'onglet <strong>PÃ©ricope</strong><br>pour gÃ©nÃ©rer une Ã©tude complÃ¨te.
+        ✝<br><br>
+        Saisissez une péricope dans l'onglet <strong>Péricope</strong><br>pour générer une étude complète.
       </div>
     </div>
   </div>
   <!-- SCREEN: SAVED -->
   <div class="screen" id="screen-saved">
     <div class="saved-screen">
-      <div class="saved-hdr">ð Mes Ã©tudes enregistrÃ©es</div>
+      <div class="saved-hdr">🔖 Mes études enregistrées</div>
       <div class="account-banner guest" id="accountBanner"></div>
       <div id="savedList"></div>
     </div>
@@ -411,7 +411,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
       <div class="modal-drag"></div>
       <div class="modal-hdr">
         <span class="modal-title-txt" id="modalTitle"></span>
-        <button class="modal-close" onclick="closeModal()">â</button>
+        <button class="modal-close" onclick="closeModal()">✕</button>
       </div>
       <div class="modal-body">
         <div class="modal-verse-text" id="modalVerseText"></div>
@@ -421,21 +421,21 @@ html,body{height:100%;width:100%;overflow:hidden;background:#3a1f0a;font-family:
   </div>
 </div><!-- .app -->
 <!-- Firebase (compat) : authentification Google + Firestore pour les comptes
-     utilisateurs et la synchronisation des Ã©tudes enregistrÃ©es. -->
+     utilisateurs et la synchronisation des études enregistrées. -->
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
 <script>
-// ââ CONFIG ââ
-// URL de votre proxy Render. Remplacez par l'URL rÃ©elle aprÃ¨s le dÃ©ploiement
+// ── CONFIG ──
+// URL de votre proxy Render. Remplacez par l'URL réelle après le déploiement
 // (ex : https://arkad-bible-proxy.onrender.com/api/messages)
 const PROXY_URL = 'https://arkad-bible-proxy.onrender.com/api/messages';
 
-// ââ FIREBASE (comptes utilisateurs + synchronisation cloud) ââ
+// ── FIREBASE (comptes utilisateurs + synchronisation cloud) ──
 // Remplacez ces valeurs par la config de VOTRE projet Firebase
-// (Console Firebase > ParamÃ¨tres du projet > Vos applications > app Web).
-// Ces valeurs ne sont pas secrÃ¨tes : elles sont conÃ§ues pour Ãªtre visibles
-// cÃ´tÃ© client (la sÃ©curitÃ© rÃ©elle vient des rÃ¨gles Firestore).
+// (Console Firebase > Paramètres du projet > Vos applications > app Web).
+// Ces valeurs ne sont pas secrètes : elles sont conçues pour être visibles
+// côté client (la sécurité réelle vient des règles Firestore).
 const firebaseConfig = {
   apiKey: "AIzaSyBWa0KTNFJ7WqLpd4RGd5ES_waA4l3DVs8",
   authDomain: "efbc-mission-god.firebaseapp.com",
@@ -451,18 +451,18 @@ try {
     auth = firebase.auth();
     db = firebase.firestore();
   } else {
-    console.warn('Firebase non configurÃ© : le login fonctionnera dÃ¨s que firebaseConfig sera renseignÃ©.');
+    console.warn('Firebase non configuré : le login fonctionnera dès que firebaseConfig sera renseigné.');
   }
 } catch (e) {
-  console.error('Erreur dâinitialisation Firebase :', e);
+  console.error('Erreur d’initialisation Firebase :', e);
 }
 
 function slugifyRef(ref) {
-  return (ref || '').toLowerCase().normalize('NFD').replace(/[Ì-Í¯]/g, '')
+  return (ref || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
     .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'etude';
 }
 function signInWithGoogle() {
-  if (!auth) { alert('Le login nâest pas encore configurÃ© cÃ´tÃ© app (firebaseConfig manquant).'); return; }
+  if (!auth) { alert('Le login n’est pas encore configuré côté app (firebaseConfig manquant).'); return; }
   const provider = new firebase.auth.GoogleAuthProvider();
   auth.signInWithPopup(provider).catch(err => alert('Erreur de connexion : ' + err.message));
 }
@@ -472,7 +472,7 @@ function signOutUser() {
 }
 function onAuthBtnClick() {
   if (currentUser) {
-    if (confirm('Se dÃ©connecter de ' + (currentUser.displayName || currentUser.email) + ' ?')) signOutUser();
+    if (confirm('Se déconnecter de ' + (currentUser.displayName || currentUser.email) + ' ?')) signOutUser();
   } else {
     signInWithGoogle();
   }
@@ -482,11 +482,11 @@ function updateAuthUI() {
   const banner = document.getElementById('accountBanner');
   if (btn) {
     if (currentUser) {
-      btn.textContent = 'ð¤';
-      btn.title = 'ConnectÃ© : ' + (currentUser.displayName || currentUser.email) + ' (toucher pour se dÃ©connecter)';
+      btn.textContent = '👤';
+      btn.title = 'Connecté : ' + (currentUser.displayName || currentUser.email) + ' (toucher pour se déconnecter)';
       btn.style.background = 'rgba(45,90,39,0.35)';
     } else {
-      btn.textContent = 'ð';
+      btn.textContent = '🔑';
       btn.title = 'Se connecter avec Google';
       btn.style.background = '';
     }
@@ -494,10 +494,10 @@ function updateAuthUI() {
   if (banner) {
     if (currentUser) {
       banner.className = 'account-banner logged';
-      banner.innerHTML = `<span>â ConnectÃ© comme <strong>${currentUser.displayName || currentUser.email}</strong> â vos Ã©tudes sont synchronisÃ©es.</span><button onclick="onAuthBtnClick()">DÃ©connexion</button>`;
+      banner.innerHTML = `<span>✓ Connecté comme <strong>${currentUser.displayName || currentUser.email}</strong> — vos études sont synchronisées.</span><button onclick="onAuthBtnClick()">Déconnexion</button>`;
     } else {
       banner.className = 'account-banner guest';
-      banner.innerHTML = `<span>ð¤ Non connectÃ© â vos Ã©tudes restent sur cet appareil seulement.</span><button onclick="signInWithGoogle()">Se connecter</button>`;
+      banner.innerHTML = `<span>👤 Non connecté — vos études restent sur cet appareil seulement.</span><button onclick="signInWithGoogle()">Se connecter</button>`;
     }
   }
 }
@@ -507,7 +507,7 @@ async function loadStudiesFromCloud() {
     const snap = await db.collection('users').doc(currentUser.uid).collection('studies').orderBy('updatedAt', 'desc').get();
     savedStudies = snap.docs.map(d => ({ ...d.data(), _docId: d.id }));
   } catch (e) {
-    console.error('Erreur chargement Ã©tudes cloud :', e);
+    console.error('Erreur chargement études cloud :', e);
   }
   if (document.getElementById('screen-saved')?.classList.contains('active')) renderSaved();
 }
@@ -524,7 +524,7 @@ if (auth) {
   });
 }
 
-// ââ CLOCK ââ
+// ── CLOCK ──
 function updateClock(){
   const now=new Date();
   document.getElementById('clockDisplay').textContent=
@@ -534,37 +534,37 @@ function updateClock(){
     days[now.getDay()]+' '+now.getDate()+'/'+(now.getMonth()+1);
 }
 updateClock();setInterval(updateClock,30000);
-// ââ STATE ââ
+// ── STATE ──
 let currentStudy=null;
 let studyNotes={};
 let savedStudies=[];
 try{savedStudies=JSON.parse(localStorage.getItem('arkad_studies')||'[]')}catch(e){}
 updateAuthUI();
-// ââ NAVIGATION ââ
+// ── NAVIGATION ──
 function showScreen(t){
   ['input','study','saved'].forEach(id=>{
     document.getElementById('screen-'+id).classList.toggle('active',id===t);
     const tb=document.getElementById('tab-'+id);
     if(tb)tb.classList.toggle('active',id===t);
   });
-  const titles={input:'EFBC Mission God',study:'Ãtude pÃ©ricope',saved:'Mes Ã©tudes'};
+  const titles={input:'EFBC Mission God',study:'Étude péricope',saved:'Mes études'};
   document.getElementById('navTitle').textContent=titles[t]||'EFBC Mission God';
   if(t==='saved')renderSaved();
   if(t==='study'&&currentStudy)renderStudy(currentStudy);
 }
-// ââ FILL EXAMPLE ââ
+// ── FILL EXAMPLE ──
 function fillEx(ref,titre){
   document.getElementById('pericInput').value=ref;
   document.getElementById('titreInput').value=titre;
   showScreen('input');
 }
-// ââ MAIN: LAUNCH ANALYSIS ââ
+// ── MAIN: LAUNCH ANALYSIS ──
 function lancerAnalyse(){
   const ref=document.getElementById('pericInput').value.trim();
   const titre=document.getElementById('titreInput').value.trim();
   genererEtude(ref,titre,null);
 }
-// RÃ©gÃ©nÃ¨re l'Ã©tude en imposant le verset de la PensÃ©e choisi par l'utilisateur.
+// Régénère l'étude en imposant le verset de la Pensée choisi par l'utilisateur.
 async function regenererAvecPensee(){
   if(!currentStudy)return;
   const input=document.getElementById('penseeAdjustInput');
@@ -576,32 +576,32 @@ async function regenererAvecPensee(){
 }
 const PERIODE_DEFS={
   histoire:{
-    angleDef:"L'identitÃ© du chrÃ©tien",
-    lienCtx:"lien explicite avec la PensÃ©e sous l'angle de l'identitÃ© du chrÃ©tien",
-    rules:`AT autorisÃ© UNIQUEMENT : JosuÃ©, Juges, Ruth, 1 Samuel, 2 Samuel, 1 Rois, 2 Rois, 1 Chroniques, 2 Chroniques, Esdras, NÃ©hÃ©mie, Esther.
-NT autorisÃ© UNIQUEMENT : Actes des ApÃ´tres.
-INTERDIT ici : GenÃ¨se Ã  DeutÃ©ronome, tout prophÃ¨te, tout poÃ©tique, tout Ã©vangile, toute Ã©pÃ®tre, l'Apocalypse.`
+    angleDef:"L'identité du chrétien",
+    lienCtx:"lien explicite avec la Pensée sous l'angle de l'identité du chrétien",
+    rules:`AT autorisé UNIQUEMENT : Josué, Juges, Ruth, 1 Samuel, 2 Samuel, 1 Rois, 2 Rois, 1 Chroniques, 2 Chroniques, Esdras, Néhémie, Esther.
+NT autorisé UNIQUEMENT : Actes des Apôtres.
+INTERDIT ici : Genèse à Deutéronome, tout prophète, tout poétique, tout évangile, toute épître, l'Apocalypse.`
   },
   loi:{
-    angleDef:'La volontÃ© de Dieu Ã  faire',
-    lienCtx:"ce que Dieu veut que le chrÃ©tien fasse ou ne fasse pas, en lien avec la PensÃ©e",
-    rules:`AT autorisÃ© UNIQUEMENT : GenÃ¨se, Exode, LÃ©vitique, Nombres, DeutÃ©ronome.
-NT autorisÃ© UNIQUEMENT : Matthieu, Marc, Luc, Jean (les 4 Ã©vangiles).
-INTERDIT ici : tout livre historique (JosuÃ©-Esther), tout prophÃ¨te, tout poÃ©tique, Actes, toute Ã©pÃ®tre, l'Apocalypse.`
+    angleDef:'La volonté de Dieu à faire',
+    lienCtx:"ce que Dieu veut que le chrétien fasse ou ne fasse pas, en lien avec la Pensée",
+    rules:`AT autorisé UNIQUEMENT : Genèse, Exode, Lévitique, Nombres, Deutéronome.
+NT autorisé UNIQUEMENT : Matthieu, Marc, Luc, Jean (les 4 évangiles).
+INTERDIT ici : tout livre historique (Josué-Esther), tout prophète, tout poétique, Actes, toute épître, l'Apocalypse.`
   },
   prophetie:{
-    angleDef:'La volontÃ© Ã  accomplir',
-    lienCtx:"rÃ©sultat de l'obÃ©issance Ã  la Loi, en lien avec la PensÃ©e",
-    rules:`AT autorisÃ© UNIQUEMENT : ÃsaÃ¯e, JÃ©rÃ©mie, Lamentations, ÃzÃ©chiel, Daniel, OsÃ©e, JoÃ«l, Amos, Abdias, Jonas, MichÃ©e, Nahum, Habacuc, Sophonie, AggÃ©e, Zacharie, Malachie.
-NT autorisÃ© UNIQUEMENT : Apocalypse.
-INTERDIT ici : Pentateuque, livres historiques, poÃ©tiques, Ã©vangiles, Actes, Ã©pÃ®tres.`
+    angleDef:'La volonté à accomplir',
+    lienCtx:"résultat de l'obéissance à la Loi, en lien avec la Pensée",
+    rules:`AT autorisé UNIQUEMENT : Ésaïe, Jérémie, Lamentations, Ézéchiel, Daniel, Osée, Joël, Amos, Abdias, Jonas, Michée, Nahum, Habacuc, Sophonie, Aggée, Zacharie, Malachie.
+NT autorisé UNIQUEMENT : Apocalypse.
+INTERDIT ici : Pentateuque, livres historiques, poétiques, évangiles, Actes, épîtres.`
   },
   poesie:{
-    angleDef:'Le modÃ¨le de vie Ã  transmettre',
-    lienCtx:"modÃ¨le de vie Ã  laisser aux disciples, en lien avec la PensÃ©e",
-    rules:`AT autorisÃ© UNIQUEMENT : Job, Psaumes, Proverbes, EcclÃ©siaste, Cantique des Cantiques.
-NT autorisÃ© UNIQUEMENT : Romains, 1 Corinthiens, 2 Corinthiens, Galates, ÃphÃ©siens, Philippiens, Colossiens, 1 Thessaloniciens, 2 Thessaloniciens, 1 TimothÃ©e, 2 TimothÃ©e, Tite, PhilÃ©mon, HÃ©breux, Jacques, 1 Pierre, 2 Pierre, 1 Jean, 2 Jean, 3 Jean, Jude (les Ã©pÃ®tres).
-INTERDIT ici : Pentateuque, livres historiques, prophÃ¨tes, Ã©vangiles, Actes, Apocalypse.`
+    angleDef:'Le modèle de vie à transmettre',
+    lienCtx:"modèle de vie à laisser aux disciples, en lien avec la Pensée",
+    rules:`AT autorisé UNIQUEMENT : Job, Psaumes, Proverbes, Ecclésiaste, Cantique des Cantiques.
+NT autorisé UNIQUEMENT : Romains, 1 Corinthiens, 2 Corinthiens, Galates, Éphésiens, Philippiens, Colossiens, 1 Thessaloniciens, 2 Thessaloniciens, 1 Timothée, 2 Timothée, Tite, Philémon, Hébreux, Jacques, 1 Pierre, 2 Pierre, 1 Jean, 2 Jean, 3 Jean, Jude (les épîtres).
+INTERDIT ici : Pentateuque, livres historiques, prophètes, évangiles, Actes, Apocalypse.`
   }
 };
 async function genererEtude(ref,titre,forcedPenseeRef){
@@ -612,13 +612,13 @@ async function genererEtude(ref,titre,forcedPenseeRef){
     return;
   }
   document.getElementById('analyseBtn').disabled=true;
-  document.getElementById('loadingRef').textContent=ref+(titre?' â '+titre:'');
+  document.getElementById('loadingRef').textContent=ref+(titre?' — '+titre:'');
   document.getElementById('loadingScreen').classList.add('show');
   ['input','study','saved'].forEach(id=>document.getElementById('screen-'+id).classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   const lr=document.getElementById('loadingRef');
-  // RÃ©cupÃ¨re les vraies rÃ©fÃ©rences croisÃ©es (OpenBible.info) avant de construire le prompt,
-  // pour que la section "preuves" soit fiable plutÃ´t qu'inventÃ©e par l'IA.
+  // Récupère les vraies références croisées (OpenBible.info) avant de construire le prompt,
+  // pour que la section "preuves" soit fiable plutôt qu'inventée par l'IA.
   const isSingleVerse=/:\d+$/.test(ref)&&!ref.includes('-');
   let crossRefList=[];
   {
@@ -631,50 +631,50 @@ async function genererEtude(ref,titre,forcedPenseeRef){
       }catch(_e){if(_a<3)await new Promise(_t=>setTimeout(_t,5000));}
     }
   }
-  if(lr)lr.textContent=ref+' â GÃ©nÃ©ration de la PensÃ©e et des preuvesâ¦';
+  if(lr)lr.textContent=ref+' — Génération de la Pensée et des preuves…';
   const crossRefBlock=crossRefList.length
-    ?`RÃFÃRENCES CROISÃES EXACTES POUR CETTE PÃRICOPE (issues d'une base de donnÃ©es de rÃ©fÃ©rence, pas inventÃ©es) â utilise EXCLUSIVEMENT ces rÃ©fÃ©rences pour la section "preuves", dans cet ordre de pertinence :\n${crossRefList.map(r=>'- '+r).join('\n')}\n\n`
+    ?`RÉFÉRENCES CROISÉES EXACTES POUR CETTE PÉRICOPE (issues d'une base de données de référence, pas inventées) — utilise EXCLUSIVEMENT ces références pour la section "preuves", dans cet ordre de pertinence :\n${crossRefList.map(r=>'- '+r).join('\n')}\n\n`
     :'';
   const singleVerseBlock=isSingleVerse
-    ?`ATTENTION : le lecteur a soumis un seul verset (${ref}), pas une pÃ©ricope complÃ¨te. Identifie d'abord la pÃ©ricope complÃ¨te (l'unitÃ© littÃ©raire naturelle â paragraphe, scÃ¨ne ou section thÃ©matique dÃ©limitÃ©e) Ã  laquelle appartient ce verset, et utilise CETTE pÃ©ricope Ã©largie comme valeur de "reference" et pour "pericopeVersets" (pas seulement le verset isolÃ©). Une pÃ©ricope typique compte entre 3 et 30 versets.\n\n`
+    ?`ATTENTION : le lecteur a soumis un seul verset (${ref}), pas une péricope complète. Identifie d'abord la péricope complète (l'unité littéraire naturelle — paragraphe, scène ou section thématique délimitée) à laquelle appartient ce verset, et utilise CETTE péricope élargie comme valeur de "reference" et pour "pericopeVersets" (pas seulement le verset isolé). Une péricope typique compte entre 3 et 30 versets.\n\n`
     :'';
   const forcedPenseeBlock=forcedPenseeRef
-    ?`IMPORTANT : L'UTILISATEUR A LUI-MÃME DÃSIGNÃ LA PENSÃE DE CETTE PÃRICOPE : ${forcedPenseeRef}. N'EN CHOISIS PAS UNE AUTRE â utilise EXACTEMENT cette rÃ©fÃ©rence comme "pensee.ref" (et le texte correspondant comme "pensee.texte"), et assure la cohÃ©rence de toute l'Ã©tude (preuves, pÃ©riodes, volontÃ©) avec ce choix.\n\n`
+    ?`IMPORTANT : L'UTILISATEUR A LUI-MÊME DÉSIGNÉ LA PENSÉE DE CETTE PÉRICOPE : ${forcedPenseeRef}. N'EN CHOISIS PAS UNE AUTRE — utilise EXACTEMENT cette référence comme "pensee.ref" (et le texte correspondant comme "pensee.texte"), et assure la cohérence de toute l'étude (preuves, périodes, volonté) avec ce choix.\n\n`
     :'';
-  const corePrompt=`Tu es un expert en exÃ©gÃ¨se biblique utilisant la mÃ©thode Dr. Arkad. Analyse la pÃ©ricope suivante.
+  const corePrompt=`Tu es un expert en exégèse biblique utilisant la méthode Dr. Arkad. Analyse la péricope suivante.
 ${singleVerseBlock}${forcedPenseeBlock}${crossRefBlock}
-PÃRICOPE : "${ref}"${titre?'\nTITRE : "'+titre+'"':''}
-GÃ©nÃ¨re UNIQUEMENT un JSON valide avec cette structure exacte (les 4 pÃ©riodes d'explication sont gÃ©nÃ©rÃ©es sÃ©parÃ©ment, ne les inclus PAS ici) :
+PÉRICOPE : "${ref}"${titre?'\nTITRE : "'+titre+'"':''}
+Génère UNIQUEMENT un JSON valide avec cette structure exacte (les 4 périodes d'explication sont générées séparément, ne les inclus PAS ici) :
 {
-  "titre": "titre de la pÃ©ricope",
+  "titre": "titre de la péricope",
   "reference": "${ref}",
-  "resume": "rÃ©sumÃ© bref et prÃ©cis de la pÃ©ricope, en 2 Ã  3 phrases simples et claires (contexte, ce qui se passe, enseignement central)",
+  "resume": "résumé bref et précis de la péricope, en 2 à 3 phrases simples et claires (contexte, ce qui se passe, enseignement central)",
   "pericopeVersets": [
-    {"n": 1, "texte": "texte du verset en franÃ§ais Louis Segond 1910"}
+    {"n": 1, "texte": "texte du verset en français Louis Segond 1910"}
   ],
   "preuves": [
-    {"ref": "Livre ch:v", "texte": "texte complet LS1910", "lien": "lien bref entre ce texte de preuve et la PensÃ©e"}
+    {"ref": "Livre ch:v", "texte": "texte complet LS1910", "lien": "lien bref entre ce texte de preuve et la Pensée"}
   ],
   "pensee": {
     "ref": "Livre ch:v",
-    "texte": "verset central qui reflÃ¨te et rÃ©sume tous les textes de preuves",
-    "commentaire": "commentaire simple et clair expliquant pourquoi ce verset rÃ©sume la pÃ©ricope"
+    "texte": "verset central qui reflète et résume tous les textes de preuves",
+    "commentaire": "commentaire simple et clair expliquant pourquoi ce verset résume la péricope"
   },
   "volonte": {
-    "ref": "Livre ch:v (DOIT Ãªtre une rÃ©fÃ©rence Ã  l'intÃ©rieur de la pÃ©ricope ${ref}, diffÃ©rente du verset de la PensÃ©e si possible)",
-    "texte": "texte LS1910 â OBLIGATOIREMENT un verset pris DANS la pÃ©ricope ${ref} elle-mÃªme (comme la PensÃ©e), qui exprime la VolontÃ© de Dieu",
+    "ref": "Livre ch:v (DOIT être une référence à l'intérieur de la péricope ${ref}, différente du verset de la Pensée si possible)",
+    "texte": "texte LS1910 — OBLIGATOIREMENT un verset pris DANS la péricope ${ref} elle-même (comme la Pensée), qui exprime la Volonté de Dieu",
     "type": "cause",
-    "explication": "Explication du lien entre la VolontÃ© de Dieu et la PensÃ©e (cause ou consÃ©quence)"
+    "explication": "Explication du lien entre la Volonté de Dieu et la Pensée (cause ou conséquence)"
   }
 }
-RÃGLES GÃNÃRALES :
-- Tous les textes en franÃ§ais Louis Segond 1910
-- "resume" = un rÃ©sumÃ© bref et prÃ©cis de la pÃ©ricope, 2 Ã  3 phrases simples, comprÃ©hensibles immÃ©diatement, qui situent le contexte et l'enseignement central â Ã  placer juste avant les textes d'explication
-- La PensÃ©e = le verset de la pÃ©ricope qui reflÃ¨te et rÃ©sume TOUS les textes de preuves
-- "pensee.commentaire" = un commentaire simple et clair (mÃªme registre que "volonte.explication") qui explique pourquoi ce verset rÃ©sume la pÃ©ricope â il sera affichÃ© juste aprÃ¨s les textes d'explication
-- Les preuves = ${crossRefList.length?'utilise UNIQUEMENT la liste de rÃ©fÃ©rences croisÃ©es exactes fournie ci-dessus, dans le mÃªme ordre, sans en omettre ni en fusionner aucune â recopie chaque rÃ©fÃ©rence TELLE QUELLE (y compris les virgules type "19:1, 16"), et Ã©cris pour chacune un "lien" bref avec la PensÃ©e':'rÃ©fÃ©rences classiques LS1910 de cette pÃ©ricope (celles en tÃªte dans les Bibles annotÃ©es), avec un "lien" bref avec la PensÃ©e pour chacune'}
-- La VolontÃ© de Dieu = soit la cause (pourquoi Dieu agit) soit la consÃ©quence (ce qui rÃ©sulte) de la PensÃ©e
-- RÃ©ponds UNIQUEMENT avec le JSON, aucun texte avant ni aprÃ¨s, aucun markdown`;
+RÈGLES GÉNÉRALES :
+- Tous les textes en français Louis Segond 1910
+- "resume" = un résumé bref et précis de la péricope, 2 à 3 phrases simples, compréhensibles immédiatement, qui situent le contexte et l'enseignement central — à placer juste avant les textes d'explication
+- La Pensée = le verset de la péricope qui reflète et résume TOUS les textes de preuves
+- "pensee.commentaire" = un commentaire simple et clair (même registre que "volonte.explication") qui explique pourquoi ce verset résume la péricope — il sera affiché juste après les textes d'explication
+- Les preuves = ${crossRefList.length?'utilise UNIQUEMENT la liste de références croisées exactes fournie ci-dessus, dans le même ordre, sans en omettre ni en fusionner aucune — recopie chaque référence TELLE QUELLE (y compris les virgules type "19:1, 16"), et écris pour chacune un "lien" bref avec la Pensée':'références classiques LS1910 de cette péricope (celles en tête dans les Bibles annotées), avec un "lien" bref avec la Pensée pour chacune'}
+- La Volonté de Dieu = soit la cause (pourquoi Dieu agit) soit la conséquence (ce qui résulte) de la Pensée
+- Réponds UNIQUEMENT avec le JSON, aucun texte avant ni après, aucun markdown`;
   try{
     const coreResp=await fetch(PROXY_URL,{
       method:'POST',
@@ -690,17 +690,17 @@ RÃGLES GÃNÃRALES :
     const coreRaw=coreData.content[0].text.trim().replace(/^```json?\s*/,'').replace(/\s*```$/,'');
     const study=JSON.parse(coreRaw);
 
-    // effectiveRef = la vÃ©ritable pÃ©ricope Ã  traiter.
-    // Si l'utilisateur a donnÃ© un verset seul et que l'IA l'a Ã©largi dans
-    // study.reference (ex. "ÃzÃ©chiel 16:35-43"), on utilise cette pÃ©ricope
-    // pour TOUT le reste (cross-refs, pÃ©riodes, textes verbatim).
+    // effectiveRef = la véritable péricope à traiter.
+    // Si l'utilisateur a donné un verset seul et que l'IA l'a élargi dans
+    // study.reference (ex. "Ézéchiel 16:35-43"), on utilise cette péricope
+    // pour TOUT le reste (cross-refs, périodes, textes verbatim).
     const effectiveRef=(()=>{
       if(!isSingleVerse) return ref;
       const r=study.reference||ref;
       const stillSingle=/:\d+$/.test(r)&&!r.includes('-');
       return stillSingle?ref:r;
     })();
-    // Si la pÃ©ricope a Ã©tÃ© Ã©largie, on rÃ©cupÃ¨re les cross-refs pour elle
+    // Si la péricope a été élargie, on récupère les cross-refs pour elle
     if(isSingleVerse&&effectiveRef!==ref){
       crossRefList=[];
       try{
@@ -712,12 +712,12 @@ RÃGLES GÃNÃRALES :
         }
       }catch(e){}
     }
-    // L'IA a parfois tendance Ã  simplifier/raccourcir une rÃ©fÃ©rence groupÃ©e
-    // (ex. "ÃsaÃ¯e 19:1, 16" -> "ÃsaÃ¯e 19:1") en recopiant les preuves. On
-    // reconstruit donc "preuves" directement Ã  partir de la liste exacte de
-    // rÃ©fÃ©rences croisÃ©es (crossRefList), dans le mÃªme ordre, en ne gardant
-    // de l'IA que son "lien" explicatif (positionnel) â la rÃ©fÃ©rence elle-mÃªme
-    // est dÃ©sormais TOUJOURS la nÃ´tre, jamais une recopie potentiellement altÃ©rÃ©e.
+    // L'IA a parfois tendance à simplifier/raccourcir une référence groupée
+    // (ex. "Ésaïe 19:1, 16" -> "Ésaïe 19:1") en recopiant les preuves. On
+    // reconstruit donc "preuves" directement à partir de la liste exacte de
+    // références croisées (crossRefList), dans le même ordre, en ne gardant
+    // de l'IA que son "lien" explicatif (positionnel) — la référence elle-même
+    // est désormais TOUJOURS la nôtre, jamais une recopie potentiellement altérée.
     if(crossRefList.length>=5){
       const aiPreuves=Array.isArray(study.preuves)?study.preuves:[];
       study.preuves=crossRefList.map((r,i)=>({
@@ -729,22 +729,22 @@ RÃGLES GÃNÃRALES :
 
     function asArray(v){ return Array.isArray(v)?v:(v?[v]:[]); }
 
-    // Les 4 pÃ©riodes (Histoire/Loi/ProphÃ©tie/PoÃ©sie) sont gÃ©nÃ©rÃ©es en 4
-    // appels indÃ©pendants envoyÃ©s EN PARALLÃLE (Promise.all) plutÃ´t qu'un
-    // seul Ã©norme appel sÃ©quentiel â chaque appel ne produit que 16 textes
-    // (8 pour la PensÃ©e + 8 pour la VolontÃ©) au lieu de 64 d'un coup, donc le
-    // temps d'attente total correspond au plus lent des 4, pas Ã  leur somme.
+    // Les 4 périodes (Histoire/Loi/Prophétie/Poésie) sont générées en 4
+    // appels indépendants envoyés EN PARALLÈLE (Promise.all) plutôt qu'un
+    // seul énorme appel séquentiel — chaque appel ne produit que 16 textes
+    // (8 pour la Pensée + 8 pour la Volonté) au lieu de 64 d'un coup, donc le
+    // temps d'attente total correspond au plus lent des 4, pas à leur somme.
     const periodKeys=['histoire','loi','prophetie','poesie'];
     const periodPromises=periodKeys.map(async key=>{
       const pd=PERIODE_DEFS[key];
-      const periodPrompt=`Tu es un expert en exÃ©gÃ¨se biblique (mÃ©thode Dr. Arkad). PÃ©ricope Ã©tudiÃ©e : "${effectiveRef}".
-La PensÃ©e de cette pÃ©ricope : "${study.pensee&&study.pensee.texte}" (${study.pensee&&study.pensee.ref}).
-La VolontÃ© de Dieu liÃ©e Ã  cette pÃ©ricope : "${study.volonte&&study.volonte.texte}" (${study.volonte&&study.volonte.ref}), type : ${study.volonte&&study.volonte.type}.
+      const periodPrompt=`Tu es un expert en exégèse biblique (méthode Dr. Arkad). Péricope étudiée : "${effectiveRef}".
+La Pensée de cette péricope : "${study.pensee&&study.pensee.texte}" (${study.pensee&&study.pensee.ref}).
+La Volonté de Dieu liée à cette péricope : "${study.volonte&&study.volonte.texte}" (${study.volonte&&study.volonte.ref}), type : ${study.volonte&&study.volonte.type}.
 
-Pour la pÃ©riode "${key}" (angle par dÃ©faut : "${pd.angleDef}"), rÃ¨gles de livres autorisÃ©s â AUCUN AUTRE LIVRE n'est permis dans cette pÃ©riode :
+Pour la période "${key}" (angle par défaut : "${pd.angleDef}"), règles de livres autorisés — AUCUN AUTRE LIVRE n'est permis dans cette période :
 ${pd.rules}
 
-GÃ©nÃ¨re UNIQUEMENT ce JSON (cherche les textes Ã  travers TOUTE la Bible, pas seulement la pÃ©ricope, en respectant strictement les livres autorisÃ©s ci-dessus) :
+Génère UNIQUEMENT ce JSON (cherche les textes à travers TOUTE la Bible, pas seulement la péricope, en respectant strictement les livres autorisés ci-dessus) :
 {
   "angle": "${pd.angleDef}",
   "at": [
@@ -760,19 +760,19 @@ GÃ©nÃ¨re UNIQUEMENT ce JSON (cherche les textes Ã  travers TOUTE la Bible,
     {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
   ],
   "volonteAt": [
-    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "lien avec la VolontÃ©"},
+    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "lien avec la Volonté"},
     {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
     {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
     {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
   ],
   "volonteNt": [
-    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "lien avec la VolontÃ©"},
+    {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "lien avec la Volonté"},
     {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
     {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."},
     {"ref": "Livre ch:v", "texte": "texte LS1910", "lien": "..."}
   ]
 }
-RÃGLE OBLIGATOIRE : "at", "nt", "volonteAt" et "volonteNt" sont CHACUN des TABLEAUX d'EXACTEMENT 4 Ã©lÃ©ments (16 textes au total pour cette pÃ©riode). "at" et "volonteAt" respectent UNIQUEMENT la liste de livres AT autorisÃ©e ci-dessus ; "nt" et "volonteNt" UNIQUEMENT la liste NT autorisÃ©e. VÃ©rifie chaque rÃ©fÃ©rence avant de rÃ©pondre â aucun autre livre n'est tolÃ©rÃ©. RÃ©ponds UNIQUEMENT avec le JSON, aucun texte avant ni aprÃ¨s, aucun markdown.`;
+RÈGLE OBLIGATOIRE : "at", "nt", "volonteAt" et "volonteNt" sont CHACUN des TABLEAUX d'EXACTEMENT 4 éléments (16 textes au total pour cette période). "at" et "volonteAt" respectent UNIQUEMENT la liste de livres AT autorisée ci-dessus ; "nt" et "volonteNt" UNIQUEMENT la liste NT autorisée. Vérifie chaque référence avant de répondre — aucun autre livre n'est toléré. Réponds UNIQUEMENT avec le JSON, aucun texte avant ni après, aucun markdown.`;
       const resp=await fetch(PROXY_URL,{
         method:'POST',
         headers:{'Content-Type':'application/json'},
@@ -783,11 +783,11 @@ RÃGLE OBLIGATOIRE : "at", "nt", "volonteAt" et "volonteNt" sont CHACUN des TA
         })
       });
       const data=await resp.json();
-      if(data.error)throw new Error('PÃ©riode '+key+' : '+data.error.message);
+      if(data.error)throw new Error('Période '+key+' : '+data.error.message);
       const raw=data.content[0].text.trim().replace(/^```json?\s*/,'').replace(/\s*```$/,'');
       return {key,result:JSON.parse(raw)};
     });
-    if(lr)lr.textContent=ref+' â 4 pÃ©riodes en parallÃ¨leâ¦';
+    if(lr)lr.textContent=ref+' — 4 périodes en parallèle…';
     const periodOutcomes=await Promise.all(periodPromises);
     study.periodes={};
     study.volonte=study.volonte||{};
@@ -797,10 +797,10 @@ RÃGLE OBLIGATOIRE : "at", "nt", "volonteAt" et "volonteNt" sont CHACUN des TA
       study.volonte.periodes[key]={angle:result.angle,at:asArray(result.volonteAt),nt:asArray(result.volonteNt)};
     }
 
-    if(lr)lr.textContent=ref+' â RÃ©cupÃ©ration des textes bibliquesâ¦';
-    // Remplace le texte rÃ©digÃ© par l'IA par le texte EXACT Louis Segond 1910
-    // (pÃ©ricope, preuves, pÃ©riodes, volontÃ©) â l'IA ne fait plus que choisir
-    // les rÃ©fÃ©rences et l'analyse, pas le texte biblique lui-mÃªme.
+    if(lr)lr.textContent=ref+' — Récupération des textes bibliques…';
+    // Remplace le texte rédigé par l'IA par le texte EXACT Louis Segond 1910
+    // (péricope, preuves, périodes, volonté) — l'IA ne fait plus que choisir
+    // les références et l'analyse, pas le texte biblique lui-même.
     try{
       const refsToFetch=new Set();
       if(study.reference)refsToFetch.add(study.reference);
@@ -845,7 +845,7 @@ RÃGLE OBLIGATOIRE : "at", "nt", "volonteAt" et "volonteNt" sont CHACUN des TA
           }
         });
       }
-    }catch(e){ /* en cas d'Ã©chec, on garde le texte rÃ©digÃ© par l'IA */ }
+    }catch(e){ /* en cas d'échec, on garde le texte rédigé par l'IA */ }
 
     study._requestedRef=ref;
     study._generatedAt=new Date();
@@ -860,39 +860,39 @@ RÃGLE OBLIGATOIRE : "at", "nt", "volonteAt" et "volonteNt" sont CHACUN des TA
     document.getElementById('analyseBtn').disabled=false;
     document.getElementById('studyContent').innerHTML=`
       <div class="error-box">
-        â ï¸<br><br>
-        <strong>Erreur lors de la gÃ©nÃ©ration</strong><br><br>
+        ⚠️<br><br>
+        <strong>Erreur lors de la génération</strong><br><br>
         ${err.message}<br><br>
-        VÃ©rifiez votre connexion internet et rÃ©essayez.
+        Vérifiez votre connexion internet et réessayez.
         <br><br>
-        <button class="retry-btn" onclick="showScreen('input')">â Retour</button>
+        <button class="retry-btn" onclick="showScreen('input')">← Retour</button>
       </div>`;
     showScreen('study');
   }
 }
-// ââ RENDER STUDY ââ
+// ── RENDER STUDY ──
 function renderStudy(s){
   if(!s)return;
   const isSaved=savedStudies.some(x=>x.ref===s.reference);
   const n=studyNotes[s.reference]||'';
   const pConfig={
-    histoire:{cls:'ph',icon:'ð°',lbl:'Histoire',def:"L'identitÃ© du chrÃ©tien"},
-    loi:     {cls:'pl',icon:'âï¸',lbl:'Loi',     def:'La volontÃ© Ã  faire'},
-    prophetie:{cls:'ppr',icon:'ð',lbl:'ProphÃ©tie',def:'La volontÃ© Ã  accomplir'},
-    poesie:  {cls:'ppo',icon:'ð¶',lbl:'PoÃ©sie',  def:'Le modÃ¨le de vie'}
+    histoire:{cls:'ph',icon:'🕰',lbl:'Histoire',def:"L'identité du chrétien"},
+    loi:     {cls:'pl',icon:'⚖️',lbl:'Loi',     def:'La volonté à faire'},
+    prophetie:{cls:'ppr',icon:'👁',lbl:'Prophétie',def:'La volonté à accomplir'},
+    poesie:  {cls:'ppo',icon:'🎶',lbl:'Poésie',  def:'Le modèle de vie'}
   };
   function escAttr(s){return (s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;').replace(/\n/g,' ')}
   function txCard(tx,label,pk,zone,idx){
     if(!tx)return'';
     const isCustom=!!tx.custom;
     return`<div class="texte-card${isCustom?' custom':''}">
-      ${isCustom&&pk?`<button class="texte-del-btn" onclick="removeCustomTexte('${pk}','${zone}',${idx})" title="Retirer ce texte">â</button>`:''}
-      <div class="texte-badge">${label}${isCustom?'<span class="texte-custom-tag">ð Vous</span>':''}</div>
+      ${isCustom&&pk?`<button class="texte-del-btn" onclick="removeCustomTexte('${pk}','${zone}',${idx})" title="Retirer ce texte">✕</button>`:''}
+      <div class="texte-badge">${label}${isCustom?'<span class="texte-custom-tag">🙋 Vous</span>':''}</div>
       <button class="texte-ref-btn" onclick="showModal('${escAttr(tx.ref)}','${escAttr(tx.texte)}')">
-        ð ${tx.ref||''}
+        🔗 ${tx.ref||''}
       </button>
       <div class="texte-content">"${tx.texte||''}"</div>
-      ${tx.lien?`<div class="texte-lien">â ${tx.lien}</div>`:''}
+      ${tx.lien?`<div class="texte-lien">→ ${tx.lien}</div>`:''}
     </div>`;
   }
   function periodeBlock(key,pd,pfx){
@@ -902,14 +902,14 @@ function renderStudy(s){
     const atArr=Array.isArray(pd.at)?pd.at:(pd.at?[pd.at]:[]);
     const ntArr=Array.isArray(pd.nt)?pd.nt:(pd.nt?[pd.nt]:[]);
     const linkPk=pfx==='per'?key:null;
-    const atHtml=atArr.map((tx,i)=>txCard(tx,`AT ${i+1}/${atArr.length} â Ancien Testament`,linkPk,'at',i)).join('');
-    const ntHtml=ntArr.map((tx,i)=>txCard(tx,`NT ${i+1}/${ntArr.length} â Nouveau Testament`,linkPk,'nt',i)).join('');
+    const atHtml=atArr.map((tx,i)=>txCard(tx,`AT ${i+1}/${atArr.length} — Ancien Testament`,linkPk,'at',i)).join('');
+    const ntHtml=ntArr.map((tx,i)=>txCard(tx,`NT ${i+1}/${ntArr.length} — Nouveau Testament`,linkPk,'nt',i)).join('');
     return`<div class="periode-wrap ${c.cls}">
       <div class="periode-head" onclick="togglePd('${pid}')">
         <span>${c.icon}</span>
         <span class="periode-lbl">${c.lbl}</span>
         <span class="periode-angle">${pd.angle||c.def}</span>
-        <span class="periode-tog" id="ptog_${pid}">â¸</span>
+        <span class="periode-tog" id="ptog_${pid}">▸</span>
       </div>
       <div class="periode-body" id="ppb_${pid}">
         ${atHtml}
@@ -920,14 +920,14 @@ function renderStudy(s){
   let prevHtml=(s.preuves||[]).map(p=>`
     <div class="preuve-item">
       <span class="preuve-ref">${p.ref||''}</span>
-      <span class="preuve-prev">${(p.texte||'').substring(0,60)}â¦</span>
-      <button class="eye-btn" onclick="showModal('${escAttr(p.ref)}','${escAttr(p.texte)}')">ð</button>
+      <span class="preuve-prev">${(p.texte||'').substring(0,60)}…</span>
+      <button class="eye-btn" onclick="showModal('${escAttr(p.ref)}','${escAttr(p.texte)}')">👁</button>
     </div>`).join('');
   let versetsHtml=(s.pericopeVersets||[]).map(v=>{
     const ip=s.pensee&&s.pensee.ref&&s.pensee.ref.includes(':'+v.n);
     return`<div class="pericope-verse${ip?' is-pensee':''}">
       <span class="vnum">${v.n}</span>${v.texte||''}
-      ${ip?'<span class="p-badge">â¨ PensÃ©e</span>':''}
+      ${ip?'<span class="p-badge">✨ Pensée</span>':''}
     </div>`;
   }).join('');
   let perHtml=['histoire','loi','prophetie','poesie'].map(k=>periodeBlock(k,s.periodes?.[k],'per')).join('');
@@ -936,60 +936,60 @@ function renderStudy(s){
     <div class="study-header">
       <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:4px">
         <div class="study-titre">${s.titre||s.reference}</div>
-        ${isSaved?'<span class="saved-tag">â EnregistrÃ©e</span>':''}
+        ${isSaved?'<span class="saved-tag">✓ Enregistrée</span>':''}
       </div>
       <div class="study-meta">
-        <span>ð ${s.reference}</span>
-        <span>ð Louis Segond 1910</span>
-        ${s._generatedAt?`<span>ð ${new Date(s._generatedAt).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</span>`:''}
+        <span>📖 ${s.reference}</span>
+        <span>🕊 Louis Segond 1910</span>
+        ${s._generatedAt?`<span>🕐 ${new Date(s._generatedAt).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</span>`:''}
       </div>
-      ${(s._requestedRef&&s._requestedRef!==s.reference)?`<div class="requested-note">DemandÃ© : ${s._requestedRef} â pÃ©ricope Ã©tudiÃ©e : ${s.reference}</div>`:''}
+      ${(s._requestedRef&&s._requestedRef!==s.reference)?`<div class="requested-note">Demandé : ${s._requestedRef} → péricope étudiée : ${s.reference}</div>`:''}
     </div>
     <div class="study-body">
       <div class="section">
         <div class="sec-head" onclick="toggleSec('preuves')">
-          ð Preuves pÃ©ricope (${(s.preuves||[]).length})
-          <span class="sec-tog" id="stog_preuves">â¾</span>
+          🔗 Preuves péricope (${(s.preuves||[]).length})
+          <span class="sec-tog" id="stog_preuves">▾</span>
         </div>
         <div class="sec-body" id="sec_preuves">${prevHtml}</div>
       </div>
       <div class="section">
         <div class="sec-head" onclick="toggleSec('pericope')">
-          ð PÃ©ricope complÃ¨te
-          <span class="sec-tog" id="stog_pericope">â¾</span>
+          📜 Péricope complète
+          <span class="sec-tog" id="stog_pericope">▾</span>
         </div>
         <div class="sec-body" id="sec_pericope">${versetsHtml}</div>
       </div>
       ${s.resume?`<div class="section">
-        <div class="sec-head">ð RÃ©sumÃ© de la pÃ©ricope</div>
+        <div class="sec-head">📋 Résumé de la péricope</div>
         <div class="sec-body"><div class="resume-box">${s.resume}</div></div>
       </div>`:''}
       <div class="section">
-        <div class="sec-head">â¨ La PensÃ©e</div>
+        <div class="sec-head">✨ La Pensée</div>
         <div class="sec-body">
           <div class="pensee-box">
             <div class="pensee-text">"${s.pensee?.texte||''}"</div>
             <div class="pensee-ref">${s.pensee?.ref||''}</div>
           </div>
           ${s.pensee?.commentaire?`<div class="pensee-expl">${s.pensee.commentaire}</div>`:''}
-          <div class="pensee-adjust-label" style="margin-top:10px">Pas le bon verset ? Indiquez la rÃ©fÃ©rence exacte et rÃ©gÃ©nÃ©rez :</div>
+          <div class="pensee-adjust-label" style="margin-top:10px">Pas le bon verset ? Indiquez la référence exacte et régénérez :</div>
           <div class="pensee-adjust">
             <input type="text" id="penseeAdjustInput" placeholder="Ex : ${s.reference} 18" value="${s.pensee?.ref||''}" />
-            <button onclick="regenererAvecPensee()">ð RÃ©gÃ©nÃ©rer</button>
+            <button onclick="regenererAvecPensee()">🔄 Régénérer</button>
           </div>
         </div>
       </div>
       <div class="section">
         <div class="sec-head" onclick="toggleSec('texpl')">
-          ð Textes d'explication â 4 pÃ©riodes
-          <span class="sec-tog" id="stog_texpl">â¸</span>
+          📚 Textes d'explication — 4 périodes
+          <span class="sec-tog" id="stog_texpl">▸</span>
         </div>
         <div class="sec-body collapsed" id="sec_texpl">
           <div class="custom-add">
-            <div class="custom-add-label">ð Vous avez un texte Ã  ajouter ? Indiquez la rÃ©fÃ©rence â il sera reliÃ© Ã  la PensÃ©e et classÃ© automatiquement dans la bonne pÃ©riode :</div>
+            <div class="custom-add-label">🙋 Vous avez un texte à ajouter ? Indiquez la référence — il sera relié à la Pensée et classé automatiquement dans la bonne période :</div>
             <div class="custom-add-row">
               <input type="text" id="customTexteInput" placeholder="Ex : Romains 8:28" />
-              <button id="customTexteBtn" onclick="ajouterTexteCustom()">â Ajouter</button>
+              <button id="customTexteBtn" onclick="ajouterTexteCustom()">➕ Ajouter</button>
             </div>
             <div class="custom-add-msg" id="customTexteMsg"></div>
           </div>
@@ -998,9 +998,9 @@ function renderStudy(s){
       </div>
       <div class="section">
         <div class="sec-head" onclick="toggleSec('volonte')">
-          ð La VolontÃ© de Dieu
+          👑 La Volonté de Dieu
           <span style="font-size:9px;padding:2px 7px;border-radius:20px;background:rgba(26,58,107,0.1);color:var(--blue);margin-left:4px;font-weight:700">${s.volonte?.type||''}</span>
-          <span class="sec-tog" id="stog_volonte">â¸</span>
+          <span class="sec-tog" id="stog_volonte">▸</span>
         </div>
         <div class="sec-body collapsed" id="sec_volonte">
           <div class="volonte-box">
@@ -1014,20 +1014,20 @@ function renderStudy(s){
       </div>
       <div class="section">
         <div class="sec-head" onclick="toggleSec('notes')">
-          ð Mes notes
-          <span class="sec-tog" id="stog_notes">â¾</span>
+          📝 Mes notes
+          <span class="sec-tog" id="stog_notes">▾</span>
         </div>
         <div class="sec-body" id="sec_notes">
           <textarea class="notes-ta" id="studyNotes"
-            placeholder="RÃ©flexions, observations, questions sur cette pÃ©ricopeâ¦"
+            placeholder="Réflexions, observations, questions sur cette péricope…"
             oninput="autoSaveNotes()">${n}</textarea>
         </div>
       </div>
     </div>
     <div class="study-footer">
-      <button class="fbtn save" onclick="saveStudy()">ð Enregistrer</button>
-      <button class="fbtn" onclick="shareStudy()">ð¤ Partager</button>
-      <button class="fbtn" onclick="showScreen('input')">â Nouvelle</button>
+      <button class="fbtn save" onclick="saveStudy()">🔖 Enregistrer</button>
+      <button class="fbtn" onclick="shareStudy()">📤 Partager</button>
+      <button class="fbtn" onclick="showScreen('input')">➕ Nouvelle</button>
     </div>`;
 }
 function toggleSec(id){
@@ -1035,26 +1035,26 @@ function toggleSec(id){
   const t=document.getElementById('stog_'+id);
   if(!b)return;
   const col=b.classList.toggle('collapsed');
-  if(t)t.textContent=col?'â¸':'â¾';
+  if(t)t.textContent=col?'▸':'▾';
 }
 function togglePd(id){
   const b=document.getElementById('ppb_'+id);
   const t=document.getElementById('ptog_'+id);
   if(!b)return;
   const op=b.classList.toggle('open');
-  if(t)t.textContent=op?'â¾':'â¸';
+  if(t)t.textContent=op?'▾':'▸';
 }
-// ââ TEXTE D'EXPLICATION AJOUTÃ PAR L'UTILISATEUR ââ
-// L'utilisateur indique une rÃ©fÃ©rence ; le serveur la classe automatiquement
-// dans la bonne pÃ©riode/zone (AT/NT) et renvoie son texte LS1910 exact ; l'IA
-// n'Ã©crit ensuite qu'une courte phrase reliant ce texte Ã  la PensÃ©e. AffichÃ©
-// avec une couleur distincte (vert sarcelle) pour le diffÃ©rencier des textes
+// ── TEXTE D'EXPLICATION AJOUTÉ PAR L'UTILISATEUR ──
+// L'utilisateur indique une référence ; le serveur la classe automatiquement
+// dans la bonne période/zone (AT/NT) et renvoie son texte LS1910 exact ; l'IA
+// n'écrit ensuite qu'une courte phrase reliant ce texte à la Pensée. Affiché
+// avec une couleur distincte (vert sarcelle) pour le différencier des textes
 // choisis par l'IA.
 const PERIODE_ANGLE_DEF={
-  histoire:"L'identitÃ© du chrÃ©tien",
-  loi:'La volontÃ© de Dieu Ã  faire',
-  prophetie:'La volontÃ© Ã  accomplir',
-  poesie:'Le modÃ¨le de vie Ã  transmettre'
+  histoire:"L'identité du chrétien",
+  loi:'La volonté de Dieu à faire',
+  prophetie:'La volonté à accomplir',
+  poesie:'Le modèle de vie à transmettre'
 };
 async function ajouterTexteCustom(){
   const input=document.getElementById('customTexteInput');
@@ -1064,21 +1064,21 @@ async function ajouterTexteCustom(){
   if(!ref||!currentStudy)return;
   btn.disabled=true;
   msgEl.className='custom-add-msg';
-  msgEl.textContent='Recherche en coursâ¦';
+  msgEl.textContent='Recherche en cours…';
   try{
     const clUrl=PROXY_URL.replace('/api/messages','/api/classify-ref')+'?ref='+encodeURIComponent(ref);
     const clResp=await fetch(clUrl);
     const clData=await clResp.json();
-    if(!clResp.ok||clData.error)throw new Error((clData.error&&clData.error.message)||'RÃ©fÃ©rence introuvable.');
+    if(!clResp.ok||clData.error)throw new Error((clData.error&&clData.error.message)||'Référence introuvable.');
     const{ref:frRef,periode,zone,texte}=clData;
     const angle=(currentStudy.periodes&&currentStudy.periodes[periode]&&currentStudy.periodes[periode].angle)||PERIODE_ANGLE_DEF[periode];
     const penseeTexte=(currentStudy.pensee&&currentStudy.pensee.texte)||'';
     const penseeRef=(currentStudy.pensee&&currentStudy.pensee.ref)||'';
-    msgEl.textContent='RÃ©daction du lien avec la PensÃ©eâ¦';
-    const lienPrompt=`Voici la PensÃ©e centrale d'une Ã©tude biblique : "${penseeTexte}" (${penseeRef}).
-Voici un texte que le lecteur a choisi lui-mÃªme comme texte d'explication, classÃ© dans la pÃ©riode "${periode}" (angle : "${angle}") : "${texte}" (${frRef}).
-En 1 Ã  2 phrases simples et claires, explique le lien entre ce texte et la PensÃ©e, sous l'angle de cette pÃ©riode.
-RÃ©ponds UNIQUEMENT avec le texte du lien, sans guillemets, sans prÃ©ambule, sans markdown.`;
+    msgEl.textContent='Rédaction du lien avec la Pensée…';
+    const lienPrompt=`Voici la Pensée centrale d'une étude biblique : "${penseeTexte}" (${penseeRef}).
+Voici un texte que le lecteur a choisi lui-même comme texte d'explication, classé dans la période "${periode}" (angle : "${angle}") : "${texte}" (${frRef}).
+En 1 à 2 phrases simples et claires, explique le lien entre ce texte et la Pensée, sous l'angle de cette période.
+Réponds UNIQUEMENT avec le texte du lien, sans guillemets, sans préambule, sans markdown.`;
     const lienResp=await fetch(PROXY_URL,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -1096,10 +1096,10 @@ RÃ©ponds UNIQUEMENT avec le texte du lien, sans guillemets, sans prÃ©ambule,
     const body=document.getElementById('sec_texpl');
     if(body)body.classList.remove('collapsed');
     const tog=document.getElementById('stog_texpl');
-    if(tog)tog.textContent='â¾';
+    if(tog)tog.textContent='▾';
   }catch(e){
     msgEl.className='custom-add-msg err';
-    msgEl.textContent='â ï¸ '+e.message;
+    msgEl.textContent='⚠️ '+e.message;
     btn.disabled=false;
   }
 }
@@ -1110,13 +1110,13 @@ function removeCustomTexte(periode,zone,idx){
   const body=document.getElementById('sec_texpl');
   if(body)body.classList.remove('collapsed');
   const tog=document.getElementById('stog_texpl');
-  if(tog)tog.textContent='â¾';
+  if(tog)tog.textContent='▾';
 }
 function autoSaveNotes(){
   const ta=document.getElementById('studyNotes');
   if(ta&&currentStudy)studyNotes[currentStudy.reference]=ta.value;
 }
-// ââ SAVE ââ
+// ── SAVE ──
 async function saveStudy(){
   if(!currentStudy)return;
   const n=studyNotes[currentStudy.reference]||document.getElementById('studyNotes')?.value||'';
@@ -1146,56 +1146,56 @@ async function saveStudy(){
   }
   renderStudy(currentStudy);
   // petit feedback
-  btn.textContent='â EnregistrÃ©e !';
-  setTimeout(()=>btn.textContent='ð Enregistrer',1500);
+  btn.textContent='✓ Enregistrée !';
+  setTimeout(()=>btn.textContent='🔖 Enregistrer',1500);
 }
-// ââ SHARE ââ
+// ── SHARE ──
 function shareStudy(){
   if(!currentStudy)return;
   const s=currentStudy;
   const n=studyNotes[s.reference]||'';
-  const preuves=(s.preuves||[]).map(p=>'â¢ '+p.ref).join('\n');
-  const periodNames={histoire:'ð° HISTOIRE',loi:'âï¸ LOI',prophetie:'ð PROPHÃTIE',poesie:'ð¶ POÃSIE'};
+  const preuves=(s.preuves||[]).map(p=>'• '+p.ref).join('\n');
+  const periodNames={histoire:'🕰 HISTOIRE',loi:'⚖️ LOI',prophetie:'👁 PROPHÉTIE',poesie:'🎶 POÉSIE'};
   let periodesText='';
   for(const [key,label] of Object.entries(periodNames)){
     const p=s.periodes&&s.periodes[key];
     if(!p)continue;
-    const at=(p.at||[]).map(it=>'  â¢ '+it.ref).join('\n');
-    const nt=(p.nt||[]).map(it=>'  â¢ '+it.ref).join('\n');
-    periodesText+='\n\n'+label+' â '+p.angle+'\n  [Ancien Testament]\n'+at+'\n  [Nouveau Testament]\n'+nt;
+    const at=(p.at||[]).map(it=>'  • '+it.ref).join('\n');
+    const nt=(p.nt||[]).map(it=>'  • '+it.ref).join('\n');
+    periodesText+='\n\n'+label+' — '+p.angle+'\n  [Ancien Testament]\n'+at+'\n  [Nouveau Testament]\n'+nt;
   }
   const text=
-    'â ÃTUDE DE PÃRICOPE\n'+
-    'â MÃ©thode du Dr. PÃ©niel Houmbadji Patrick\n\n'+
-    'ð '+(s.titre||s.reference)+' ('+s.reference+')\n\n'+
-    'â¨ LA PENSÃE :\n"'+s.pensee?.texte+'"\nâ '+s.pensee?.ref+'\n\n'+
-    'ð PREUVES :\n'+preuves+'\n\n'+
-    'ð VOLONTÃ DE DIEU ('+(s.volonte?.type||'')+') :\n"'+s.volonte?.texte+'"\nâ '+s.volonte?.ref+
+    '✝ ÉTUDE DE PÉRICOPE\n'+
+    '— Méthode du Dr. Péniel Houmbadji Patrick\n\n'+
+    '📖 '+(s.titre||s.reference)+' ('+s.reference+')\n\n'+
+    '✨ LA PENSÉE :\n"'+s.pensee?.texte+'"\n— '+s.pensee?.ref+'\n\n'+
+    '🔗 PREUVES :\n'+preuves+'\n\n'+
+    '👑 VOLONTÉ DE DIEU ('+(s.volonte?.type||'')+') :\n"'+s.volonte?.texte+'"\n— '+s.volonte?.ref+
     periodesText+
-    (n?'\n\nð NOTES :\n'+n:'')+
-    '\n\nâ MÃ©thode du Dr. PÃ©niel Houmbadji Patrick | EFBC Mission God';
+    (n?'\n\n📝 NOTES :\n'+n:'')+
+    '\n\n— Méthode du Dr. Péniel Houmbadji Patrick | EFBC Mission God';
   if(navigator.share){
     navigator.share({title:s.titre||s.reference,text});
   }else{
-    try{navigator.clipboard.writeText(text);alert('â Ãtude copiÃ©e dans le presse-papier !')}
+    try{navigator.clipboard.writeText(text);alert('✓ Étude copiée dans le presse-papier !')}
     catch(e){alert(text)}
   }
 }
-// ââ SAVED LIST ââ
+// ── SAVED LIST ──
 function renderSaved(){
   const el=document.getElementById('savedList');
   if(!savedStudies.length){
-    el.innerHTML='<div class="saved-empty">ð<br><br>Aucune Ã©tude enregistrÃ©e.<br>GÃ©nÃ©rez une Ã©tude et touchez <strong>ð Enregistrer</strong>.</div>';
+    el.innerHTML='<div class="saved-empty">📖<br><br>Aucune étude enregistrée.<br>Générez une étude et touchez <strong>🔖 Enregistrer</strong>.</div>';
     return;
   }
   el.innerHTML=savedStudies.map(s=>`
     <div class="saved-item" onclick="loadSaved('${(s.ref||'').replace(/'/g,"\\'")}')">
       <div class="si-titre">${s.titre||s.ref}</div>
-      <div class="si-ref">ð ${s.ref}</div>
-      <div class="si-pensee">â¨ PensÃ©e : ${s.pensee||''}</div>
+      <div class="si-ref">📖 ${s.ref}</div>
+      <div class="si-pensee">✨ Pensée : ${s.pensee||''}</div>
       <div class="si-meta">
-        <span>ð ${s.date}</span>
-        ${s.notes?'<span>ð Avec notes</span>':''}
+        <span>📅 ${s.date}</span>
+        ${s.notes?'<span>📝 Avec notes</span>':''}
       </div>
     </div>`).join('');
 }
@@ -1203,7 +1203,7 @@ function loadSaved(ref){
   const s=savedStudies.find(x=>x.ref===ref);
   if(s&&s.data){currentStudy=s.data;showScreen('study')}
 }
-// ââ MODAL ââ
+// ── MODAL ──
 function showModal(ref,texte){
   document.getElementById('modalTitle').textContent=ref;
   document.getElementById('modalVerseText').textContent='"'+texte+'"';
@@ -1211,11 +1211,11 @@ function showModal(ref,texte){
   document.getElementById('modalOverlay').classList.add('open');
 }
 function closeModal(){document.getElementById('modalOverlay').classList.remove('open')}
-// ââ PWA MANIFEST (inline) ââ
+// ── PWA MANIFEST (inline) ──
 const manifest={
   name:'EFBC Mission God',
   short_name:'EFBC Mission God',
-  description:'Ãtude de pÃ©ricope â MÃ©thode du Dr. PÃ©niel Houmbadji Patrick',
+  description:'Étude de péricope — Méthode du Dr. Péniel Houmbadji Patrick',
   start_url:'.',
   display:'standalone',
   background_color:'#3a1f0a',
