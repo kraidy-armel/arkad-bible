@@ -1,7 +1,16 @@
-// server.js — Proxy Google Gemini pour Arkad Bible
+// server.js — Proxy IA pour PÉNIEL — Étude biblique
 // Rôle : recevoir les requêtes du navigateur (index.html) au format Anthropic,
-// les traduire vers l'API Google Gemini (gratuite), et retourner la réponse
-// au même format Anthropic — sans modifier index.html.
+// les router vers des modèles 100 % gratuits (Groq en primaire, OpenRouter en
+// secours automatique), et retourner la réponse au même format Anthropic —
+// sans modifier index.html.
+//
+// Variables d'environnement Render à configurer :
+//   OPENROUTER_API_KEY  (recommandé)   clé gratuite https://openrouter.ai (login Google/GitHub)
+//   GROQ_API_KEY        (optionnel)    clé gratuite https://console.groq.com → fallback
+//   OPENROUTER_MODEL    (optionnel)    défaut : meta-llama/llama-3.3-70b-instruct:free
+//   GROQ_MODEL          (optionnel)    défaut : llama-3.3-70b-versatile
+// Il suffit d'UNE seule clé pour que l'app fonctionne. On essaie les
+// fournisseurs dans l'ordre ci-dessous et on bascule au suivant en cas d'échec.
 
 const express = require('express');
 const cors = require('cors');
@@ -13,77 +22,122 @@ app.use(cors());
 
 app.use(express.json({ limit: '2mb' }));
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_MODEL = 'gemini-2.0-flash';
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+// ── Fournisseurs IA gratuits (compatibles OpenAI Chat Completions) ──
+// On essaie chaque fournisseur dans l'ordre ; si l'un échoue (erreur réseau,
+// quota atteint, réponse vide), on bascule automatiquement sur le suivant.
+// Les quotas étant indépendants, l'app reste opérationnelle quasi en permanence.
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const GROQ_MODEL = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
+const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'meta-llama/llama-3.3-70b-instruct:free';
+
+const PROVIDERS = [
+  {
+    name: 'openrouter',
+    enabled: () => !!OPENROUTER_API_KEY,
+    url: 'https://openrouter.ai/api/v1/chat/completions',
+    model: OPENROUTER_MODEL,
+    headers: () => ({
+      'Authorization': 'Bearer ' + OPENROUTER_API_KEY,
+      'HTTP-Referer': 'https://kraidy-armel.github.io/arkad-bible/',
+      'X-Title': 'PENIEL Etude biblique'
+    })
+  },
+  {
+    name: 'groq',
+    enabled: () => !!GROQ_API_KEY,
+    url: 'https://api.groq.com/openai/v1/chat/completions',
+    model: GROQ_MODEL,
+    headers: () => ({ 'Authorization': 'Bearer ' + GROQ_API_KEY })
+  }
+];
+
+// Construit le tableau de messages OpenAI à partir du format Anthropic envoyé
+// par index.html ({ system, messages:[{role, content}] }).
+function toOpenAiMessages(system, messages) {
+  const out = [];
+  if (system) out.push({ role: 'system', content: system });
+  for (const m of (messages || [])) {
+    const content = typeof m.content === 'string'
+      ? m.content
+      : (Array.isArray(m.content) ? m.content.map(c => c.text || '').join('') : '');
+    out.push({ role: m.role === 'assistant' ? 'assistant' : 'user', content });
+  }
+  return out;
+}
+
+// Appelle un fournisseur OpenAI-compatible et renvoie le texte généré.
+async function callProvider(provider, oaMessages, maxTokens) {
+  const resp = await fetch(provider.url, {
+    method: 'POST',
+    headers: Object.assign({ 'Content-Type': 'application/json' }, provider.headers()),
+    body: JSON.stringify({
+      model: provider.model,
+      messages: oaMessages,
+      // On plafonne la sortie à 8192 (le JSON d'étude tient dans cette taille,
+      // comme c'était déjà le cas sous Gemini) pour rester sous les limites
+      // tokens/minute des paliers gratuits.
+      max_tokens: Math.min(maxTokens || 8192, 8192),
+      temperature: 0.3
+    })
+  });
+
+  let data;
+  try { data = await resp.json(); }
+  catch (e) { throw new Error('Réponse non-JSON (HTTP ' + resp.status + ')'); }
+
+  if (!resp.ok) {
+    const msg = (data && data.error && (data.error.message || data.error)) || ('HTTP ' + resp.status);
+    throw new Error(typeof msg === 'string' ? msg : JSON.stringify(msg));
+  }
+
+  const choice = data.choices && data.choices[0];
+  const text = choice && choice.message ? (choice.message.content || '') : '';
+  if (!text) throw new Error('Réponse vide du fournisseur ' + provider.name);
+  return text;
+}
 
 // Route de vérification
 app.get('/', (req, res) => {
-  res.send('✅ EFBC Mission God proxy (Gemini) en ligne.');
+  const active = PROVIDERS.filter(p => p.enabled()).map(p => p.name + ' (' + p.model + ')');
+  const txt = active.length
+    ? 'Fournisseurs actifs : ' + active.join(' → ')
+    : 'Aucune clé configurée — ajoutez GROQ_API_KEY (et éventuellement OPENROUTER_API_KEY) dans Render.';
+  res.send('✅ PÉNIEL — proxy IA en ligne. ' + txt);
 });
 
-// Route appelée par index.html — accepte le format Anthropic, répond en format Anthropic.
-// En interne, traduit vers l'API Gemini (gratuite et rapide).
+// Route appelée par index.html — accepte le format Anthropic, répond en format
+// Anthropic. En interne, route vers Groq puis OpenRouter (fallback automatique).
 app.post('/api/messages', async (req, res) => {
-  if (!GEMINI_API_KEY) {
+  const active = PROVIDERS.filter(p => p.enabled());
+  if (!active.length) {
     return res.status(500).json({
-      error: { message: "GEMINI_API_KEY manquante. Configurez-la dans les variables d'environnement Render." }
+      error: { message: "Aucune clé IA configurée. Ajoutez GROQ_API_KEY (et éventuellement OPENROUTER_API_KEY) dans les variables d'environnement Render." }
     });
   }
 
-  try {
-    // ── Traduction format Anthropic → Gemini ──────────────────────────────────
-    const { system, messages = [], max_tokens } = req.body;
+  const { system, messages = [], max_tokens } = req.body;
+  const oaMessages = toOpenAiMessages(system, messages);
 
-    // Instruction système (optionnelle)
-    const systemInstruction = system
-      ? { parts: [{ text: system }] }
-      : undefined;
-
-    // Conversion des messages : role "assistant" → "model" pour Gemini
-    const contents = messages.map(m => ({
-      role: m.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: typeof m.content === 'string' ? m.content : m.content.map(c => c.text || '').join('') }]
-    }));
-
-    const geminiBody = {
-      contents,
-      generationConfig: {
-        maxOutputTokens: max_tokens || 8192,
-        temperature: 0.3
-      }
-    };
-    if (systemInstruction) geminiBody.systemInstruction = systemInstruction;
-
-    // ── Appel Gemini ──────────────────────────────────────────────────────────
-    const geminiResponse = await fetch(`${GEMINI_URL}?key=${GEMINI_API_KEY}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(geminiBody)
-    });
-
-    const geminiData = await geminiResponse.json();
-
-    if (!geminiResponse.ok) {
-      console.error('Erreur Gemini:', JSON.stringify(geminiData));
-      return res.status(geminiResponse.status).json({
-        error: { message: geminiData.error?.message || 'Erreur Gemini inconnue' }
+  const errors = [];
+  for (const provider of active) {
+    try {
+      const text = await callProvider(provider, oaMessages, max_tokens);
+      return res.json({
+        content: [{ type: 'text', text }],
+        model: provider.name + ':' + provider.model,
+        stop_reason: 'end_turn'
       });
+    } catch (err) {
+      console.error('Fournisseur ' + provider.name + ' en échec : ' + err.message);
+      errors.push(provider.name + ': ' + err.message);
+      // on passe au fournisseur suivant (fallback)
     }
-
-    // ── Traduction réponse Gemini → format Anthropic ──────────────────────────
-    const text = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    const anthropicCompatible = {
-      content: [{ type: 'text', text }],
-      model: GEMINI_MODEL,
-      stop_reason: 'end_turn'
-    };
-
-    res.json(anthropicCompatible);
-  } catch (err) {
-    console.error('Erreur proxy Gemini:', err);
-    res.status(500).json({ error: { message: 'Erreur du proxy : ' + err.message } });
   }
+
+  res.status(502).json({
+    error: { message: 'Tous les fournisseurs IA ont échoué. ' + errors.join(' | ') }
+  });
 });
 
 // ── RÉFÉRENCES CROISÉES (cross-references) ──
@@ -745,5 +799,5 @@ app.get('/api/classify-ref', async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Proxy EFBC Mission God en écoute sur le port ${PORT}`);
+  console.log(`Proxy PÉNIEL — Étude biblique en écoute sur le port ${PORT}`);
 });
