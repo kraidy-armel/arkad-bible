@@ -321,7 +321,11 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a1330;font-family:
 .exhort-appli-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.7px;color:var(--gold);margin-bottom:6px}
 .exhort-appli-txt{font-size:13.5px;color:var(--ink);line-height:1.65}
 .exhort-appli-ref{font-size:11.5px;font-weight:700;color:var(--gold);margin-top:6px}
-.exhort-share{display:flex;gap:8px;margin-top:14px}
+.exhort-recit{font-size:14px;color:var(--ink);line-height:1.72;padding:14px;border-radius:12px;background:rgba(201,162,39,0.1);border:1px solid rgba(201,162,39,0.32);white-space:pre-wrap}
+.exhort-recit-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.7px;color:var(--gold);margin-bottom:7px}
+.exhort-refs{font-size:11px;color:var(--ink3);margin-top:9px;line-height:1.5}
+.exhort-breakdown-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.7px;color:var(--ink3);margin:16px 0 8px}
+.exhort-share{display:flex;gap:8px;margin-top:12px}
 .exhort-share button{flex:1;padding:11px 6px;border-radius:10px;border:none;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
 .exhort-share .ws-btn{background:#25d366;color:#fff}
 .exhort-share .cp-btn{background:var(--accent);color:#fff}
@@ -449,12 +453,13 @@ const PROXY_URL = 'https://arkad-bible-proxy.onrender.com/api/messages';
 // Ces valeurs ne sont pas secrètes : elles sont conçues pour être visibles
 // côté client (la sécurité réelle vient des règles Firestore).
 const firebaseConfig = {
-  apiKey: "REMPLACER_API_KEY",
-  authDomain: "REMPLACER.firebaseapp.com",
-  projectId: "REMPLACER",
-  storageBucket: "REMPLACER.appspot.com",
-  messagingSenderId: "REMPLACER",
-  appId: "REMPLACER"
+  apiKey: "AIzaSyBWa0KTNFJ7WqLpd4RGd5ES_waA4l3DVs8",
+  authDomain: "efbc-mission-god.firebaseapp.com",
+  projectId: "efbc-mission-god",
+  storageBucket: "efbc-mission-god.firebasestorage.app",
+  messagingSenderId: "356693380430",
+  appId: "1:356693380430:web:5f1e970200c0876991a21f",
+  measurementId: "G-63Z4EFYN59"
 };
 let auth = null, db = null, currentUser = null;
 try {
@@ -768,6 +773,7 @@ Génère UNIQUEMENT un JSON valide avec cette structure exacte :
   },
   "exhortation": {
     "personnage": "nom du personnage ou sujet central de la péricope",
+    "recit": "L'EXHORTATION À PARTAGER : un SEUL texte fluide et chaleureux (≈120 à 180 mots) qui enchaîne les 4 périodes dans l'ordre le plus logique (en général histoire → loi → prophétie → poésie) autour du personnage central, avec une phrase de TRANSITION reliant chaque période à la suivante, et se terminant par une application personnelle et directe au lecteur ancrée dans un verset de la péricope. Style WhatsApp / méditation quotidienne, français courant, sans jargon. N'écris PAS les références ici, elles sont ajoutées automatiquement.",
     "histoire": {"ref": "Livre ch:v", "texte": "", "commentaire": "A. SON HISTOIRE — qui est ce personnage et quelle était sa situation ; appuie-toi sur un texte d'histoire biblique (RÉUTILISE de préférence l'un des textes de la période 'histoire' ci-dessus)"},
     "acte": {"ref": "Livre ch:v", "texte": "", "commentaire": "B. CE QU'IL A FAIT — quelle obéissance, quel acte de foi a-t-il posé ; appuie-toi sur un texte de loi ou d'enseignement (RÉUTILISE de préférence l'un des textes de la période 'loi')"},
     "consequence": {"ref": "Livre ch:v", "texte": "", "commentaire": "C. CE QUE CELA A PRODUIT — la conséquence spirituelle ou prophétique de cet acte ; appuie-toi sur un texte prophétique (RÉUTILISE de préférence l'un des textes de la période 'prophetie')"},
@@ -813,7 +819,7 @@ RÈGLES DE RIGUEUR SUR LES TEXTES D'EXPLICATION (à respecter pour CHAQUE texte 
 - N'invente JAMAIS un lien entre deux passages s'il n'est pas clairement démontrable par le texte biblique lui-même ; en cas de doute, choisis un autre passage dont le lien est évident.
 - Lorsque plusieurs interprétations légitimes existent pour un passage, présente-les objectivement dans le champ "lien", avec leurs arguments bibliques respectifs, sans en imposer une seule.
 
-EXHORTATION QUOTIDIENNE ("exhortation") : rédige une exhortation courte, vivante et partageable (lisible sur WhatsApp ou en méditation), structurée en 4 volets autour du personnage ou du sujet central de la péricope. A=SON HISTOIRE (texte d'histoire), B=CE QU'IL A FAIT (texte de loi/enseignement), C=CE QUE CELA A PRODUIT (texte prophétique), D=LE MODÈLE QU'IL LAISSE (texte de poésie/sagesse) ; RÉUTILISE de préférence les textes déjà choisis dans les périodes correspondantes. Termine par une application directe et personnelle au lecteur, ancrée dans un verset DE LA PÉRICOPE. Style : français courant, chaleureux et direct, bibliquement ancré à chaque volet, sans jargon théologique inutile.
+EXHORTATION QUOTIDIENNE ("exhortation") : rédige une exhortation courte, vivante et partageable (lisible sur WhatsApp ou en méditation), structurée en 4 volets autour du personnage ou du sujet central de la péricope. A=SON HISTOIRE (texte d'histoire), B=CE QU'IL A FAIT (texte de loi/enseignement), C=CE QUE CELA A PRODUIT (texte prophétique), D=LE MODÈLE QU'IL LAISSE (texte de poésie/sagesse) ; RÉUTILISE de préférence les textes déjà choisis dans les périodes correspondantes. Termine par une application directe et personnelle au lecteur, ancrée dans un verset DE LA PÉRICOPE. Style : français courant, chaleureux et direct, bibliquement ancré à chaque volet, sans jargon théologique inutile. EN PLUS des 4 volets, renseigne OBLIGATOIREMENT "exhortation.recit" : la MÊME exhortation rédigée comme UN SEUL texte fluide qui enchaîne les 4 périodes avec des phrases de transition entre chacune et se termine par l'application personnelle — c'est CE texte qui sera partagé sur WhatsApp.
 
 - Réponds UNIQUEMENT avec le JSON, aucun texte avant ni après, aucun markdown`;
   try{
@@ -1001,17 +1007,26 @@ function renderStudy(s){
       </div>`;
     };
     const ap=ex.application||{};
-    const apHtml=(ap.message||ap.texte)?`<div class="exhort-appli">
-      <div class="exhort-appli-lbl">🎯 Application personnelle</div>
-      <div class="exhort-appli-txt">${ap.message||''}</div>
-      ${ap.ref?`<div class="exhort-appli-ref">🔗 ${ap.ref}${ap.texte?' — « '+ap.texte+' »':''}</div>`:''}
-    </div>`:'';
-    const body=volet(ex.histoire,'va','A','Son histoire')
+    const recit=(ex.recit||'').trim();
+    const refList=[ex.histoire,ex.acte,ex.consequence,ex.modele,ap].map(o=>o&&o.ref?o.ref:null).filter(Boolean);
+    const refsHtml=refList.length?`<div class="exhort-refs">📖 Références : ${refList.join(' · ')}</div>`:'';
+    const shareBtns=`<div class="exhort-share">
+      <button class="ws-btn" onclick="shareExhortation('whatsapp')">🟢 WhatsApp</button>
+      <button class="cp-btn" onclick="shareExhortation('copy')">📋 Copier</button>
+    </div>`;
+    const head=recit
+      ? `<div class="exhort-recit"><div class="exhort-recit-lbl">🦅 À méditer & partager</div>${recit}${refsHtml}</div>`
+      : `<div class="exhort-intro">Une méditation courte et partageable autour du personnage central de la péricope.</div>`;
+    const volets=volet(ex.histoire,'va','A','Son histoire')
       +volet(ex.acte,'vb','B',"Ce qu'il a fait")
       +volet(ex.consequence,'vc','C','Ce que cela a produit')
-      +volet(ex.modele,'vd','D','Le modèle qu'+"'"+'il laisse')
-      +apHtml;
-    if(body.trim()){
+      +volet(ex.modele,'vd','D','Le modèle qu'+"'"+'il laisse');
+    const apHtml=ap.message?`<div class="exhort-volet vd">
+      <div class="exhort-volet-titre" style="color:var(--gold)">🎯 Pour toi aujourd'hui</div>
+      <div class="exhort-volet-txt">${ap.message}</div>
+      ${ap.ref?`<button class="exhort-volet-ref" style="color:var(--gold)" onclick="showModal('${escAttr(ap.ref)}','${escAttr(ap.texte)}')">🔗 ${ap.ref}</button>`:''}
+    </div>`:'';
+    if(recit||volets.trim()||ap.message){
       exhortHtml=`<div class="section exhort-sec">
         <div class="sec-head" onclick="toggleSec('exhort')">
           🦅 Exhortation quotidienne
@@ -1019,12 +1034,11 @@ function renderStudy(s){
         </div>
         <div class="sec-body collapsed" id="sec_exhort">
           ${ex.personnage?`<div class="exhort-perso">✨ ${ex.personnage}</div>`:''}
-          <div class="exhort-intro">Une méditation courte et partageable, en 4 volets, autour du personnage central de la péricope.</div>
-          ${body}
-          <div class="exhort-share">
-            <button class="ws-btn" onclick="shareExhortation('whatsapp')">🟢 WhatsApp</button>
-            <button class="cp-btn" onclick="shareExhortation('copy')">📋 Copier</button>
-          </div>
+          ${head}
+          ${shareBtns}
+          ${(volets.trim()||apHtml)?'<div class="exhort-breakdown-lbl">Le détail, période par période</div>':''}
+          ${volets}
+          ${apHtml}
         </div>
       </div>`;
     }
@@ -1271,22 +1285,26 @@ function buildExhortationText(){
   if(!currentStudy||!currentStudy.exhortation)return'';
   const ex=currentStudy.exhortation;
   const ref=currentStudy.reference||'';
-  const v=(o)=>o&&(o.commentaire||o.texte)?o.commentaire||'':'';
-  let t='🦅 EXHORTATION QUOTIDIENNE — PÉNIEL\n';
-  t+='📖 '+(currentStudy.titre||ref)+' ('+ref+')\n';
-  if(ex.personnage)t+='✨ '+ex.personnage+'\n';
-  t+='\n';
-  if(v(ex.histoire))t+='A. SON HISTOIRE\n'+v(ex.histoire)+(ex.histoire.ref?'\n('+ex.histoire.ref+')':'')+'\n\n';
-  if(v(ex.acte))t+="B. CE QU'IL A FAIT\n"+v(ex.acte)+(ex.acte.ref?'\n('+ex.acte.ref+')':'')+'\n\n';
-  if(v(ex.consequence))t+='C. CE QUE CELA A PRODUIT\n'+v(ex.consequence)+(ex.consequence.ref?'\n('+ex.consequence.ref+')':'')+'\n\n';
-  if(v(ex.modele))t+="D. LE MODÈLE QU'IL LAISSE\n"+v(ex.modele)+(ex.modele.ref?'\n('+ex.modele.ref+')':'')+'\n\n';
   const ap=ex.application||{};
-  if(ap.message||ap.texte){
-    t+='🎯 POUR TOI AUJOURD’HUI\n'+(ap.message||'');
-    if(ap.ref)t+='\n— '+ap.ref+(ap.texte?' : « '+ap.texte+' »':'');
-    t+='\n\n';
+  let t='🦅 EXHORTATION — PÉNIEL\n';
+  t+=(ex.personnage?'✦ '+ex.personnage+' ':'')+'('+ref+')\n\n';
+  const recit=(ex.recit||'').trim();
+  if(recit){
+    // Récit fluide : les 4 périodes enchaînées avec transitions + application.
+    t+=recit+'\n';
+  }else{
+    // Repli (anciennes études sans "recit") : on assemble les 4 volets.
+    const v=(o)=>o&&o.commentaire?o.commentaire:'';
+    if(v(ex.histoire))t+='A. SON HISTOIRE\n'+v(ex.histoire)+(ex.histoire.ref?'\n('+ex.histoire.ref+')':'')+'\n\n';
+    if(v(ex.acte))t+="B. CE QU'IL A FAIT\n"+v(ex.acte)+(ex.acte.ref?'\n('+ex.acte.ref+')':'')+'\n\n';
+    if(v(ex.consequence))t+='C. CE QUE CELA A PRODUIT\n'+v(ex.consequence)+(ex.consequence.ref?'\n('+ex.consequence.ref+')':'')+'\n\n';
+    if(v(ex.modele))t+="D. LE MODÈLE QU'IL LAISSE\n"+v(ex.modele)+(ex.modele.ref?'\n('+ex.modele.ref+')':'')+'\n\n';
+    if(ap.message)t+="🎯 POUR TOI AUJOURD'HUI\n"+ap.message+(ap.ref?'\n— '+ap.ref:'')+'\n';
   }
-  t+='— PÉNIEL · Étude biblique';
+  // Références des versets utilisés
+  const refs=[ex.histoire,ex.acte,ex.consequence,ex.modele,ap].map(o=>o&&o.ref?o.ref:null).filter(Boolean);
+  if(refs.length)t+='\n📖 Références : '+refs.join(' · ')+'\n';
+  t+='\n— PÉNIEL · Étude biblique';
   return t;
 }
 function shareExhortation(mode){
