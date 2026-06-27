@@ -614,12 +614,12 @@ async function genererEtude(ref,titre,forcedPenseeRef){
       if(Array.isArray(crData.references))crossRefList=crData.references;
     }
   }catch(e){ /* on continue sans références croisées si l'appel échoue */ }
-  const isSingleVerse=/:\d+$/.test(ref)&&!ref.includes('-');
+  const isSingleVerse=/[:.]\d+$/.test(ref)&&!/[-–]/.test(ref);
   const crossRefBlock=crossRefList.length
-    ?`RÉFÉRENCES CROISÉES EXACTES POUR CETTE PÉRICOPE (issues d'une base de données de référence, pas inventées) — utilise EXCLUSIVEMENT ces références pour la section "preuves", dans cet ordre de pertinence :\n${crossRefList.map(r=>'- '+r).join('\n')}\n\n`
+    ?`RÉFÉRENCES CROISÉES POUR CETTE PÉRICOPE (issues d'une base de référence, pas inventées) — base-toi EXCLUSIVEMENT sur ces références pour la section "preuves", dans cet ordre. Tu peux RESTREINDRE une référence à un sous-ensemble de versets (même livre ET même chapitre), mais jamais en ajouter une nouvelle ni changer de livre/chapitre :\n${crossRefList.map(r=>'- '+r).join('\n')}\n\n`
     :'';
   const singleVerseBlock=isSingleVerse
-    ?`ATTENTION : le lecteur a soumis un seul verset (${ref}), pas une péricope complète. Identifie d'abord la péricope complète (l'unité littéraire naturelle — paragraphe, scène ou section thématique délimitée) à laquelle appartient ce verset, et utilise CETTE péricope élargie comme valeur de "reference" et pour "pericopeVersets" (pas seulement le verset isolé). Une péricope typique compte entre 3 et 30 versets.\n\n`
+    ?`⚠️ RÈGLE ABSOLUE — VERSET UNIQUE : le lecteur a saisi UN SEUL verset (${ref}). NE TRAITE PAS ce verset isolé. Détermine d'abord la PÉRICOPE COMPLÈTE (l'unité littéraire naturelle : paragraphe, scène ou section délimitée) à laquelle il appartient — en général 3 à 30 versets — et fais TOUTE l'étude sur cette péricope élargie. Le champ "reference" DOIT être la plage complète, jamais le verset seul (ex. saisie "Ruth 1:1" → "reference":"Ruth 1:1-5" ; saisie "Ézéchiel 36:1" → la section entière comme "Ézéchiel 36:1-15").\n\n`
     :'';
   const forcedPenseeBlock=forcedPenseeRef
     ?`IMPORTANT : L'UTILISATEUR A LUI-MÊME DÉSIGNÉ LA PENSÉE DE CETTE PÉRICOPE : ${forcedPenseeRef}. N'EN CHOISIS PAS UNE AUTRE — utilise EXACTEMENT cette référence comme "pensee.ref" (et le texte correspondant comme "pensee.texte"), et assure la cohérence de toute l'étude (preuves, périodes, volonté) avec ce choix.\n\n`
@@ -809,7 +809,7 @@ RÈGLES GÉNÉRALES :
 - "resume" = un résumé bref et précis de la péricope, 2 à 3 phrases simples, compréhensibles immédiatement, qui situent le contexte et l'enseignement central — à placer juste avant les textes d'explication
 - La Pensée = le verset de la péricope qui reflète et résume TOUS les textes de preuves
 - "pensee.commentaire" = un commentaire simple et clair (même registre que "volonte.explication") qui explique pourquoi ce verset résume la péricope — il sera affiché juste après les textes d'explication
-- Les preuves = ${crossRefList.length?'utilise UNIQUEMENT la liste de références croisées exactes fournie ci-dessus, dans le même ordre, sans en omettre ni en fusionner aucune — recopie chaque référence TELLE QUELLE (y compris les virgules type "19:1, 16")':'références classiques LS1910 de cette péricope (celles en tête dans les Bibles annotées)'}
+- Les preuves = ${crossRefList.length?'pars de la liste de références croisées fournie ci-dessus (garde-les TOUTES, dans le même ordre, sans changer de livre ni de chapitre). Si une référence couvre une plage large ou un chapitre entier, RESTREINS-la dans "ref" au(x) SEUL(S) verset(s) précis qui justifie(nt) la Pensée — ex. "Jérémie 31:4-14, 23-28" devient "Jérémie 31:10" si c\'est ce verset qui justifie la Pensée. Mets le lien explicatif dans "lien"':'références classiques LS1910 de cette péricope (celles en tête dans les Bibles annotées), restreintes au(x) seul(s) verset(s) qui justifie(nt) la Pensée'}
 - La Volonté de Dieu = soit la cause (pourquoi Dieu agit) soit la conséquence (ce qui résulte) de la Pensée
 
 RÈGLES DE RIGUEUR SUR LES TEXTES D'EXPLICATION (à respecter pour CHAQUE texte "at"/"nt") :
@@ -837,19 +837,24 @@ EXHORTATION QUOTIDIENNE ("exhortation") : rédige une exhortation courte, vivant
     const raw=data.content[0].text.trim().replace(/^```json?\s*/,'').replace(/\s*```$/,'');
     const study=JSON.parse(raw);
 
-    // L'IA a parfois tendance à simplifier/raccourcir une référence groupée
-    // (ex. "Ésaïe 19:1, 16" -> "Ésaïe 19:1") en recopiant les preuves. On
-    // reconstruit donc "preuves" directement à partir de la liste exacte de
-    // références croisées (crossRefList), dans le même ordre, en ne gardant
-    // de l'IA que son "lien" explicatif (positionnel) — la référence elle-même
-    // est désormais TOUJOURS la nôtre, jamais une recopie potentiellement altérée.
+    // On part de la liste exacte de références croisées (crossRefList), dans le
+    // même ordre, et on autorise l'IA à RESTREINDRE chaque référence au(x)
+    // verset(s) précis qui justifie(nt) la Pensée — mais UNIQUEMENT si sa
+    // version reste dans le MÊME livre + chapitre que l'originale (sinon on
+    // garde l'originale, pour empêcher toute invention ou changement de passage).
     if(crossRefList.length){
       const aiPreuves=Array.isArray(study.preuves)?study.preuves:[];
-      study.preuves=crossRefList.map((r,i)=>({
-        ref:r,
-        texte:(aiPreuves[i]&&aiPreuves[i].texte)||'',
-        lien:(aiPreuves[i]&&aiPreuves[i].lien)||''
-      }));
+      const refPrefix=(r)=>{const m=(r||'').match(/^(.*?\d+):/);return m?m[1]+':':''};
+      study.preuves=crossRefList.map((r,i)=>{
+        const ai=aiPreuves[i]||{};
+        const aiRef=(ai.ref||'').trim();
+        const ok=aiRef&&refPrefix(aiRef)&&refPrefix(aiRef)===refPrefix(r);
+        return {
+          ref: ok?aiRef:r,
+          texte:'',
+          lien:(ai.lien)||''
+        };
+      });
     }
 
     // Remplace le texte rédigé par l'IA par le texte EXACT Louis Segond 1910
