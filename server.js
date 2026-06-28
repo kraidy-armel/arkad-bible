@@ -5,12 +5,13 @@
 // sans modifier index.html.
 //
 // Variables d'environnement Render à configurer :
-//   OPENROUTER_API_KEY  (recommandé)   clé gratuite https://openrouter.ai (login Google/GitHub)
+//   GITHUB_TOKEN        (recommandé)   jeton GitHub (permission « Models: read ») → GitHub Models, gratuit
+//   OPENROUTER_API_KEY  (optionnel)    clé gratuite https://openrouter.ai → fallback
 //   GROQ_API_KEY        (optionnel)    clé gratuite https://console.groq.com → fallback
-//   OPENROUTER_MODEL    (optionnel)    défaut : meta-llama/llama-3.3-70b-instruct:free
-//   GROQ_MODEL          (optionnel)    défaut : llama-3.3-70b-versatile
-// Il suffit d'UNE seule clé pour que l'app fonctionne. On essaie les
-// fournisseurs dans l'ordre ci-dessous et on bascule au suivant en cas d'échec.
+//   GITHUB_MODELS       (optionnel)    défaut : openai/gpt-4o-mini,openai/gpt-4o
+//   OPENROUTER_MODELS / GROQ_MODELS    (optionnel)  listes de slugs séparées par des virgules
+// Il suffit d'UNE seule clé pour que l'app fonctionne. On essaie GitHub Models,
+// puis OpenRouter, puis Groq, en basculant au suivant à chaque échec.
 
 const express = require('express');
 const cors = require('cors');
@@ -26,15 +27,17 @@ app.use(express.json({ limit: '2mb' }));
 // On essaie chaque fournisseur dans l'ordre ; si l'un échoue (erreur réseau,
 // quota atteint, réponse vide), on bascule automatiquement sur le suivant.
 // Les quotas étant indépendants, l'app reste opérationnelle quasi en permanence.
-const GROQ_API_KEY = process.env.GROQ_API_KEY;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || process.env.GH_MODELS_TOKEN;
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
-// Listes de modèles essayés DANS L'ORDRE (séparés par des virgules). Les modèles
-// :free d'OpenRouter tombent parfois en panne en amont ("Provider returned
-// error") : on en essaie donc plusieurs jusqu'à ce que l'un réponde. Un modèle
-// inexistant ou en échec est simplement ignoré, on passe au suivant.
+// Listes de modèles essayés DANS L'ORDRE (séparés par des virgules). On essaie
+// chaque modèle jusqu'à ce que l'un réponde ; un modèle inexistant, saturé ou
+// en échec est simplement ignoré, on passe au suivant.
+const GITHUB_MODELS = (process.env.GITHUB_MODELS || 'openai/gpt-4o-mini,openai/gpt-4o')
+  .split(',').map(s => s.trim()).filter(Boolean);
 const OPENROUTER_MODELS = (process.env.OPENROUTER_MODELS || process.env.OPENROUTER_MODEL ||
-  'nvidia/nemotron-3-ultra-550b-a55b:free,meta-llama/llama-3.3-70b-instruct:free,nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free,nex-agi/nex-n2-pro:free'
+  'meta-llama/llama-3.3-70b-instruct:free,nvidia/nemotron-3-ultra-550b-a55b:free'
 ).split(',').map(s => s.trim()).filter(Boolean);
 const GROQ_MODELS = (process.env.GROQ_MODELS || process.env.GROQ_MODEL ||
   'llama-3.3-70b-versatile,llama-3.1-8b-instant'
@@ -42,10 +45,21 @@ const GROQ_MODELS = (process.env.GROQ_MODELS || process.env.GROQ_MODEL ||
 
 const PROVIDERS = [
   {
+    // GitHub Models — gratuit via un jeton GitHub. Plafond de sortie ~4000 tokens
+    // par requête sur le palier gratuit, d'où maxOut.
+    name: 'github',
+    enabled: () => !!GITHUB_TOKEN,
+    url: process.env.GITHUB_MODELS_URL || 'https://models.github.ai/inference/chat/completions',
+    models: GITHUB_MODELS,
+    maxOut: 4000,
+    headers: () => ({ 'Authorization': 'Bearer ' + GITHUB_TOKEN })
+  },
+  {
     name: 'openrouter',
     enabled: () => !!OPENROUTER_API_KEY,
     url: 'https://openrouter.ai/api/v1/chat/completions',
     models: OPENROUTER_MODELS,
+    maxOut: 8192,
     headers: () => ({
       'Authorization': 'Bearer ' + OPENROUTER_API_KEY,
       'HTTP-Referer': 'https://kraidy-armel.github.io/arkad-bible/',
@@ -57,6 +71,7 @@ const PROVIDERS = [
     enabled: () => !!GROQ_API_KEY,
     url: 'https://api.groq.com/openai/v1/chat/completions',
     models: GROQ_MODELS,
+    maxOut: 8192,
     headers: () => ({ 'Authorization': 'Bearer ' + GROQ_API_KEY })
   }
 ];
@@ -67,7 +82,7 @@ function buildAttempts() {
   const out = [];
   for (const p of PROVIDERS) {
     if (!p.enabled()) continue;
-    for (const model of p.models) out.push({ name: p.name, url: p.url, model, headers: p.headers });
+    for (const model of p.models) out.push({ name: p.name, url: p.url, model, maxOut: p.maxOut || 8192, headers: p.headers });
   }
   return out;
 }
@@ -97,7 +112,7 @@ async function callAttempt(att, oaMessages, maxTokens) {
       // On plafonne la sortie à 8192 (le JSON d'étude tient dans cette taille,
       // comme c'était déjà le cas sous Gemini) pour rester sous les limites
       // tokens/minute des paliers gratuits.
-      max_tokens: Math.min(maxTokens || 8192, 8192),
+      max_tokens: Math.min(maxTokens || 8192, att.maxOut || 8192),
       temperature: 0.3
     })
   });
@@ -675,8 +690,14 @@ function parseSfmFile(text, usfm3) {
     if (list.length) xrefs.set(usfm3 + '.' + k, list);
   }
   const sectionXrefs = new Map();
+  const sectionRanges = new Map(); // verset -> {vStart, vEnd} de SA section (péricope imprimée)
   for (const [chap, sections] of sectionRefsRaw.entries()) {
     for (const sec of sections) {
+      // Les bornes de section servent à déterminer la péricope, même si la
+      // section n'a pas de références croisées.
+      for (let v = sec.vStart; v <= sec.vEnd; v++) {
+        sectionRanges.set(usfm3 + '.' + chap + '.' + v, { vStart: sec.vStart, vEnd: sec.vEnd });
+      }
       const list = parseXtRefs(sec.refsText);
       if (!list.length) continue;
       for (let v = sec.vStart; v <= sec.vEnd; v++) {
@@ -684,12 +705,13 @@ function parseSfmFile(text, usfm3) {
       }
     }
   }
-  return { texts, xrefs, sectionXrefs };
+  return { texts, xrefs, sectionXrefs, sectionRanges };
 }
 
 let lsgIndex = null;
 let lsgXrefIndex = null;
 let lsgSectionXrefIndex = null;
+let lsgSectionRangeIndex = null;
 let lsgLoading = null;
 
 async function loadLsgIndex() {
@@ -699,6 +721,7 @@ async function loadLsgIndex() {
     const idx = new Map();
     const xrefIdx = new Map();
     const sectionIdx = new Map();
+    const sectionRangeIdx = new Map();
     const results = await Promise.all(LSG_BOOKS.map(async ([num, , usfm3]) => {
       const url = `${LSG_BASE_URL}${num}-${usfm3}.p.sfm`;
       try {
@@ -716,10 +739,12 @@ async function loadLsgIndex() {
       for (const [k, v] of book.texts.entries()) idx.set(k, v);
       for (const [k, v] of book.xrefs.entries()) xrefIdx.set(k, v);
       for (const [k, v] of book.sectionXrefs.entries()) sectionIdx.set(k, v);
+      for (const [k, v] of book.sectionRanges.entries()) sectionRangeIdx.set(k, v);
     }
     lsgIndex = idx;
     lsgXrefIndex = xrefIdx;
     lsgSectionXrefIndex = sectionIdx;
+    lsgSectionRangeIndex = sectionRangeIdx;
     console.log(`LSG1910 chargé : ${idx.size} versets indexés, ${xrefIdx.size} versets avec xrefs, ${sectionIdx.size} versets avec note de section.`);
     return idx;
   })().catch(err => {
@@ -805,6 +830,33 @@ const OSIS_TO_PERIODE = {
 };
 const OT_OSIS_SET = new Set(LSG_BOOKS.slice(0, 39).map(b => b[1]));
 function zoneOfOsis(osis) { return OT_OSIS_SET.has(osis) ? 'at' : 'nt'; }
+
+// GET /api/pericope?ref=Ésaïe 1:1
+// Renvoie les bornes de la péricope (la section imprimée « V. x-y » de la
+// Bible Segond) qui contient le verset demandé — pour ne pas laisser le modèle
+// estimer la plage. { found:true, pericope:"Ésaïe 1:1-9", verseStart, verseEnd }
+app.get('/api/pericope', async (req, res) => {
+  try {
+    const ref = (req.query.ref || '').toString();
+    const parsed = parseFrenchRef(ref);
+    if (!parsed) return res.status(400).json({ error: { message: 'Référence non reconnue : ' + ref } });
+    await loadLsgIndex();
+    const usfm3 = OSIS_TO_USFM3[parsed.osis];
+    const v = parsed.verseStart || 1;
+    const range = (usfm3 && lsgSectionRangeIndex)
+      ? lsgSectionRangeIndex.get(usfm3 + '.' + parsed.chapter + '.' + v)
+      : null;
+    if (!range) return res.json({ ref, found: false });
+    const fr = OSIS_TO_FR[parsed.osis] || parsed.osis;
+    const pericope = range.vStart === range.vEnd
+      ? `${fr} ${parsed.chapter}:${range.vStart}`
+      : `${fr} ${parsed.chapter}:${range.vStart}-${range.vEnd}`;
+    res.json({ ref, found: true, pericope, verseStart: range.vStart, verseEnd: range.vEnd });
+  } catch (err) {
+    console.error('Erreur pericope:', err);
+    res.status(500).json({ error: { message: 'Erreur pericope : ' + err.message } });
+  }
+});
 
 // GET /api/classify-ref?ref=Romains 8:28
 app.get('/api/classify-ref', async (req, res) => {
