@@ -686,7 +686,7 @@ async function genererEtude(ref,titre,forcedPenseeRef){
   const prompt=`Tu es un expert en exégèse biblique utilisant la méthode Dr. Arkad. Analyse la péricope suivante et génère une étude complète en JSON.
 ${singleVerseBlock}${forcedPenseeBlock}${crossRefBlock}
 PÉRICOPE : "${ref}"${titre?'\nTITRE : "'+titre+'"':''}
-Génère UNIQUEMENT un JSON valide avec cette structure exacte :
+Génère UNIQUEMENT un JSON valide avec cette structure exacte. IMPÉRATIF : remplis ENTIÈREMENT le bloc "periodes" (les 4 périodes de la Pensée : histoire, loi, prophetie, poesie, chacune avec 4 "at" + 4 "nt") — ce bloc ne doit JAMAIS être vide ni omis. Remplis ENSUITE "volonte.periodes" de la même manière. Les DEUX blocs sont obligatoires.
 {
   "titre": "titre de la péricope",
   "reference": "${ref}",
@@ -705,60 +705,60 @@ Génère UNIQUEMENT un JSON valide avec cette structure exacte :
       "angle": "L'identité du chrétien",
       "at": [
         {"ref": "Livre ch:v", "texte": "", "lien": "déclare l'IDENTITÉ du chrétien que ce texte révèle : QUI il est et comment il est appelé (ex. peuple de Dieu, élu, enfant de Dieu, sacrificateur royal, nation sainte, brebis du troupeau…), en lien avec la Pensée"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"}
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"}
       ],
       "nt": [
         {"ref": "Livre ch:v", "texte": "", "lien": "déclare l'IDENTITÉ du chrétien que ce texte révèle : QUI il est et comment il est appelé (ex. peuple de Dieu, élu, enfant de Dieu, sacrificateur royal, nation sainte, brebis du troupeau…), en lien avec la Pensée"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"}
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"}
       ]
     },
     "loi": {
       "angle": "La volonté de Dieu à faire",
       "at": [
         {"ref": "Livre ch:v", "texte": "", "lien": "énonce CLAIREMENT la volonté de Dieu À FAIRE : l'action concrète que le chrétien doit faire (ou ne pas faire) d'après ce texte, en lien avec la Pensée"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"}
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"}
       ],
       "nt": [
         {"ref": "Livre ch:v", "texte": "", "lien": "énonce CLAIREMENT la volonté de Dieu À FAIRE : l'action concrète que le chrétien doit faire (ou ne pas faire) d'après ce texte, en lien avec la Pensée"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"}
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"}
       ]
     },
     "prophetie": {
       "angle": "La volonté à accomplir",
       "at": [
         {"ref": "Livre ch:v", "texte": "", "lien": "énonce CLAIREMENT l'ŒUVRE de Dieu À ACCOMPLIR : ce que Dieu réalise/accomplit (fruit, promesse, jugement ou restauration) d'après ce texte, en lien avec la Pensée"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"}
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"}
       ],
       "nt": [
         {"ref": "Livre ch:v", "texte": "", "lien": "énonce CLAIREMENT l'ŒUVRE de Dieu À ACCOMPLIR : ce que Dieu réalise/accomplit (fruit, promesse, jugement ou restauration) d'après ce texte, en lien avec la Pensée"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"}
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"}
       ]
     },
     "poesie": {
       "angle": "Le modèle de vie à transmettre",
       "at": [
         {"ref": "Livre ch:v", "texte": "", "lien": "énonce CLAIREMENT le MODÈLE de vie que le chrétien laisse à ses disciples d'après ce texte (attitude, vertu, posture spirituelle à imiter), en lien avec la Pensée"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"}
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"}
       ],
       "nt": [
         {"ref": "Livre ch:v", "texte": "", "lien": "énonce CLAIREMENT le MODÈLE de vie que le chrétien laisse à ses disciples d'après ce texte (attitude, vertu, posture spirituelle à imiter), en lien avec la Pensée"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"}
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+        {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"}
       ]
     }
   },
@@ -772,60 +772,60 @@ Génère UNIQUEMENT un JSON valide avec cette structure exacte :
         "angle": "L'identité du chrétien",
         "at": [
           {"ref": "Livre ch:v", "texte": "", "lien": "lien avec la Volonté"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"}
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"}
         ],
         "nt": [
           {"ref": "Livre ch:v", "texte": "", "lien": "lien avec la Volonté"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"}
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"}
         ]
       },
       "loi": {
         "angle": "La volonté de Dieu à faire",
         "at": [
           {"ref": "Livre ch:v", "texte": "", "lien": "lien avec la Volonté"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"}
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"}
         ],
         "nt": [
           {"ref": "Livre ch:v", "texte": "", "lien": "lien avec la Volonté"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"}
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"}
         ]
       },
       "prophetie": {
         "angle": "La volonté à accomplir",
         "at": [
           {"ref": "Livre ch:v", "texte": "", "lien": "lien avec la Volonté"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"}
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"}
         ],
         "nt": [
           {"ref": "Livre ch:v", "texte": "", "lien": "lien avec la Volonté"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"}
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"}
         ]
       },
       "poesie": {
         "angle": "Le modèle de vie à transmettre",
         "at": [
           {"ref": "Livre ch:v", "texte": "", "lien": "lien avec la Volonté"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"}
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"}
         ],
         "nt": [
           {"ref": "Livre ch:v", "texte": "", "lien": "lien avec la Volonté"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"},
-          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire complet en 1 à 2 phrases reliant ce texte à la Pensée — jamais vide"}
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"},
+          {"ref": "Livre ch:v", "texte": "", "lien": "commentaire (1-2 phrases)"}
         ]
       }
     }
