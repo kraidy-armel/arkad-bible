@@ -1345,58 +1345,44 @@ async function saveStudy(){
   btn.textContent='✓ Enregistrée !';
   setTimeout(()=>btn.textContent='🔖 Enregistrer',1500);
 }
-// ── SHARE — étude COMPLÈTE ──
+// ── SHARE — étude complète (format Méthode Dr. Péniel Houmbadji Patrick) ──
 function shareStudy(){
   if(!currentStudy)return;
   const s=currentStudy;
-  const n=studyNotes[s.reference]||'';
-  const P_CFG={histoire:'🕰 HISTOIRE',loi:'⚖️ LOI',prophetie:'👁 PROPHÉTIE',poesie:'🎶 POÉSIE'};
-  const txtPeriodes=(periodes)=>{
-    if(!periodes)return'';
-    let out='';
-    ['histoire','loi','prophetie','poesie'].forEach(k=>{
-      const pd=periodes[k]; if(!pd)return;
-      out+='\n'+P_CFG[k]+(pd.angle?' — '+pd.angle:'')+'\n';
-      const zone=(arr)=>{(Array.isArray(arr)?arr:[]).forEach(it=>{
-        if(!it||!it.ref)return;
-        out+='  • '+it.ref+(it.texte?' : « '+it.texte+' »':'')+'\n';
-        if(it.lien)out+='     → '+it.lien+'\n';
-      });};
-      zone(pd.at); zone(pd.nt);
-    });
-    return out;
-  };
-  let t='🦅 PÉNIEL — ÉTUDE BIBLIQUE\n';
+  const P_CFG=[
+    ['histoire','🕰 HISTOIRE',"L'identité du chrétien"],
+    ['loi','⚖️ LOI','La volonté de Dieu à faire'],
+    ['prophetie','👁 PROPHÉTIE','La volonté à accomplir'],
+    ['poesie','🎶 POÉSIE','Le modèle de vie à transmettre']
+  ];
+  const zoneRefs=(arr)=>(Array.isArray(arr)?arr:[]).filter(it=>it&&it.ref).map(it=>'  • '+it.ref).join('\n');
+  let t='✝ ÉTUDE DE PÉRICOPE\n';
+  t+='— Méthode du Dr. Péniel Houmbadji Patrick\n';
   t+='📖 '+(s.titre||s.reference)+' ('+s.reference+')\n';
-  t+='🕊 Louis Segond 1910\n';
-  if(s.resume)t+='\n📋 RÉSUMÉ\n'+s.resume+'\n';
   if(s.pensee){
-    t+='\n✨ LA PENSÉE\n« '+(s.pensee.texte||'')+' » — '+(s.pensee.ref||'')+'\n';
-    if(s.pensee.commentaire)t+=s.pensee.commentaire+'\n';
+    t+='✨ LA PENSÉE :\n"'+(s.pensee.texte||'')+'"\n— '+(s.pensee.ref||'')+'\n';
   }
   if(s.preuves&&s.preuves.length){
-    t+='\n🔗 PREUVES\n';
-    s.preuves.forEach(p=>{ if(p&&p.ref)t+='• '+p.ref+(p.texte?' : « '+p.texte+' »':'')+'\n'; });
+    const pl=s.preuves.filter(p=>p&&p.ref).map(p=>'• '+p.ref).join('\n');
+    if(pl)t+='🔗 PREUVES :\n'+pl+'\n';
   }
-  if(s.periodes)t+='\n📚 TEXTES D’EXPLICATION — 4 PÉRIODES\n'+txtPeriodes(s.periodes);
   if(s.volonte){
-    t+='\n👑 LA VOLONTÉ DE DIEU'+(s.volonte.type?' ('+s.volonte.type+')':'')+'\n';
-    t+='« '+(s.volonte.texte||'')+' » — '+(s.volonte.ref||'')+'\n';
-    if(s.volonte.explication)t+=s.volonte.explication+'\n';
-    if(s.volonte.periodes)t+=txtPeriodes(s.volonte.periodes);
+    t+='👑 VOLONTÉ DE DIEU'+(s.volonte.type?' ('+s.volonte.type+')':'')+' :\n"'+(s.volonte.texte||'')+'"\n— '+(s.volonte.ref||'')+'\n';
   }
-  if(s.exhortation){
-    const ex=s.exhortation, recit=(ex.recit||'').trim();
-    t+='\n🦅 EXHORTATION QUOTIDIENNE\n';
-    if(ex.personnage)t+='✦ '+ex.personnage+'\n';
-    if(recit)t+=recit+'\n';
+  if(s.periodes){
+    P_CFG.forEach(([k,label,defAngle])=>{
+      const pd=s.periodes[k]; if(!pd)return;
+      t+=label+' — '+(pd.angle||defAngle)+'\n';
+      const at=zoneRefs(pd.at), nt=zoneRefs(pd.nt);
+      if(at)t+='  [Ancien Testament]\n'+at+'\n';
+      if(nt)t+='  [Nouveau Testament]\n'+nt+'\n';
+    });
   }
-  if(n)t+='\n📝 NOTES\n'+n+'\n';
-  t+='\n— PÉNIEL · Étude biblique';
+  t+='— Méthode du Dr. Péniel Houmbadji Patrick | EFBC Mission God';
   if(navigator.share){
     navigator.share({title:s.titre||s.reference,text:t}).catch(()=>{});
   }else{
-    try{navigator.clipboard.writeText(t);alert('✓ Étude complète copiée dans le presse-papier !')}
+    try{navigator.clipboard.writeText(t);alert('✓ Étude copiée dans le presse-papier !')}
     catch(e){alert(t)}
   }
 }
