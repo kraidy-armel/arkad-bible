@@ -874,7 +874,7 @@ RÈGLES GÉNÉRALES :
 - "resume" = un résumé SUBSTANTIEL et PERTINENT de la péricope (3 à 4 phrases) : situe le contexte réel (qui parle, à qui, dans quelle situation), ce qui se passe concrètement dans le passage, PUIS dégage l'enseignement spirituel central et sa portée. Sois précis et fidèle au texte, jamais vague ni passe-partout ; le lecteur doit saisir immédiatement le cœur du passage et pourquoi il compte.
 - La Pensée = le verset de la péricope qui reflète et résume TOUS les textes de preuves
 - "pensee.commentaire" = un commentaire simple et clair (même registre que "volonte.explication") qui explique pourquoi ce verset résume la péricope — il sera affiché juste après les textes d'explication
-- Les preuves = ${crossRefList.length?'pars de la liste de références croisées fournie ci-dessus et TRAITE-LES TOUTES, sans en omettre AUCUNE, dans le même ordre, sans changer de livre ni de chapitre. Pour CHACUNE : si elle couvre une plage large ou un chapitre entier, RESTREINS-la dans "ref" au(x) SEUL(S) verset(s) précis qui justifie(nt) la Pensée — ex. "Jérémie 31:4-14, 23-28" devient "Jérémie 31:10" si c\'est ce verset qui justifie la Pensée. Dans "lien", explique en UNE phrase EN QUOI ce verset soutient précisément la Pensée':'donne 3 à 6 références croisées classiques vers d\'AUTRES passages de l\'Écriture (autres livres ou chapitres) qui confirment la Pensée, chacune restreinte au verset précis, avec un "lien" reliant à la Pensée'} — RÈGLE ABSOLUE : une preuve est TOUJOURS un passage EXTERNE à la péricope étudiée "${ref}". N'utilise JAMAIS un verset de la péricope "${ref}" elle-même comme preuve (ce serait une erreur grave).
+- Les preuves = ${crossRefList.length?'reprends la liste de références croisées fournie ci-dessus TELLE QUELLE et TRAITE-LES TOUTES, sans en omettre aucune, dans le même ordre, sans rien modifier (garde chaque référence COMPLÈTE, ex. "1 Timothée 6:12, 20-21"). Dans "lien", explique EN QUOI cette référence soutient précisément la Pensée':'donne 3 à 6 références croisées classiques vers d\'AUTRES passages de l\'Écriture (autres livres ou chapitres) qui confirment la Pensée, avec un "lien" reliant à la Pensée'} — RÈGLE ABSOLUE : une preuve est TOUJOURS un passage EXTERNE à la péricope étudiée "${ref}". N'utilise JAMAIS un verset de la péricope "${ref}" elle-même comme preuve (ce serait une erreur grave).
 - La Volonté de Dieu = soit la cause (pourquoi Dieu agit) soit la conséquence (ce qui résulte) de la Pensée
 
 RÈGLES DE RIGUEUR SUR LES TEXTES D'EXPLICATION (à respecter pour CHAQUE texte "at"/"nt") :
@@ -905,23 +905,15 @@ EXHORTATION QUOTIDIENNE ("exhortation") : rédige une exhortation courte, vivant
     const raw=data.content[0].text.trim().replace(/^```json?\s*/,'').replace(/\s*```$/,'');
     const study=JSON.parse(raw);
 
-    // On part de la liste exacte de références croisées (crossRefList), dans le
-    // même ordre, et on autorise l'IA à RESTREINDRE chaque référence au(x)
-    // verset(s) précis qui justifie(nt) la Pensée — mais UNIQUEMENT si sa
-    // version reste dans le MÊME livre + chapitre que l'originale (sinon on
-    // garde l'originale, pour empêcher toute invention ou changement de passage).
+    // On affiche la référence COMPLÈTE de la note de section de la Segond
+    // (crossRefList), telle qu'imprimée (ex. "1 Timothée 6:12, 20-21"), dans le
+    // même ordre. On ne garde de l'IA que son commentaire ("lien").
     if(crossRefList.length){
       const aiPreuves=Array.isArray(study.preuves)?study.preuves:[];
-      // "Livre chapitre" sans les versets — sert à autoriser une restriction de
-      // l'IA uniquement DANS le même livre + chapitre (ex. "2 Chroniques 28" ->
-      // "2 Chroniques 28:22" est autorisé ; un autre chapitre est refusé).
-      const chapPrefix=(r)=>{const m=(r||'').match(/^(.*?\d+)(?::|$)/);return m?m[1].trim():''};
       study.preuves=crossRefList.map((r,i)=>{
         const ai=aiPreuves[i]||{};
-        const aiRef=(ai.ref||'').trim();
-        const ok=aiRef&&chapPrefix(aiRef)&&chapPrefix(aiRef)===chapPrefix(r);
         return {
-          ref: ok?aiRef:r,
+          ref: r,
           texte:'',
           lien:(ai.lien)||''
         };
