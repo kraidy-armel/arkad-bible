@@ -1,0 +1,16 @@
+{
+  "name": "PÉNIEL — Étude biblique",
+  "short_name": "PÉNIEL",
+  "description": "Étude biblique de péricope — Pensée, Preuves, 4 Périodes, Volonté de Dieu, Exhortation quotidienne.",
+  "lang": "fr",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a1330",
+  "theme_color": "#1e3a8a",
+  "icons": [
+    { "src": "peniel-aigle.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "peniel-aigle.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

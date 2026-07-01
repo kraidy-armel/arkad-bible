@@ -8,7 +8,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="PÉNIEL">
 <title>PÉNIEL — Étude biblique</title>
-<link rel="manifest" href="#" id="manifestLink">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="peniel-aigle.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
@@ -1457,24 +1458,12 @@ function showModal(ref,texte){
   document.getElementById('modalOverlay').classList.add('open');
 }
 function closeModal(){document.getElementById('modalOverlay').classList.remove('open')}
-// ── PWA MANIFEST (inline) ──
-const EAGLE_ICON='peniel-aigle.png';
-const manifest={
-  name:'PÉNIEL — Étude biblique',
-  short_name:'PÉNIEL',
-  description:'Étude biblique de péricope — Pensée, Preuves, 4 Périodes, Volonté de Dieu, Exhortation',
-  start_url:'.',
-  display:'standalone',
-  background_color:'#0a1330',
-  theme_color:'#1e3a8a',
-  orientation:'portrait',
-  icons:[
-    {src:EAGLE_ICON,sizes:'512x512',type:'image/png',purpose:'any'},
-    {src:EAGLE_ICON,sizes:'192x192',type:'image/png',purpose:'any'}
-  ]
-};
-const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
-document.getElementById('manifestLink').href=URL.createObjectURL(blob);
+// ── PWA : enregistrement du service worker (installable + hors-ligne) ──
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch((e) => console.warn('SW non enregistré :', e));
+  });
+}
 </script>
 </body>
 </html>
